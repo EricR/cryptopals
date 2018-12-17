@@ -1,6 +1,6 @@
-# Challenge 1.4 Single-Byte XOR Cipher
+# Challenge 1.5 Single-Byte XOR Cipher
 #
-# https://cryptopals.com/sets/1/challenges/3
+# https://cryptopals.com/sets/1/challenges/5
 
 import unittest
 
