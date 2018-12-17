@@ -5,7 +5,7 @@
 import unittest
 import base64
 
-class Challenge1_1(unittest.TestCase):
+class Challenge1_2(unittest.TestCase):
 	def test_fixed_xor(self):
 		bytes1 = bytearray.fromhex("1c0111001f010100061a024b53535009181c")
 		bytes2 = bytearray.fromhex("746865206b696420646f6e277420706c6179")

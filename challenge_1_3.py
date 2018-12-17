@@ -1,4 +1,4 @@
-# Challenge 1.2 Single-Byte XOR Cipher
+# Challenge 1.3 Single-Byte XOR Cipher
 #
 # https://cryptopals.com/sets/1/challenges/3
 
@@ -43,7 +43,7 @@ def frequency_score(plaintext):
 	score = 1.0
 
 	try:
-		text = plaintext.decode('ascii').lower()
+		text = plaintext.decode().lower()
 	except:
 		return score
 
@@ -53,21 +53,28 @@ def frequency_score(plaintext):
 
 	return score
 
-if __name__ == '__main__':
-	ciphertext = bytearray.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
-	recovered_key = bytes()
-	recovered_plaintext = bytes()
+def guess_with_frequency(ciphertext):
+	best_key = bytes()
+	best_plaintext = bytes()
 	max_score = 1.0
 
 	for i in range(255):
-		possible_key = bytearray.fromhex('{0:02x}'.format(i))
-		plaintext = challenge_1_2.fixed_xor(possible_key * len(ciphertext), ciphertext)
+		key = bytes.fromhex('{0:02x}'.format(i))
+		plaintext = challenge_1_2.fixed_xor(key * len(ciphertext), ciphertext)
 		score = frequency_score(plaintext)
 
 		if score > max_score:
 			max_score = score
-			recovered_key = possible_key
-			recovered_plaintext = plaintext
+			best_key = key
+			best_plaintext = plaintext
 
-	print("Key      : {}".format(recovered_key.decode("utf-8")))
-	print("Plaintext: {}".format(recovered_plaintext.decode("utf-8")))
+	return best_key, best_plaintext, max_score
+
+if __name__ == '__main__':
+	ciphertext = bytes.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+	
+	key, plaintext, max_score = guess_with_frequency(ciphertext)
+
+	print("Key      : {}".format(key))
+	print("Plaintext: {}".format(plaintext))
+	print("Score    : {}".format(max_score))
