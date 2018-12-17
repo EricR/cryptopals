@@ -1,4 +1,4 @@
-# Challenge 1.3 Single-Byte XOR Cipher
+# Challenge 1.3 Single-byte XOR cipher
 #
 # https://cryptopals.com/sets/1/challenges/3
 

@@ -1,4 +1,4 @@
-# Challenge 1.5 Single-Byte XOR Cipher
+# Challenge 1.5 Implement repeating-key XOR
 #
 # https://cryptopals.com/sets/1/challenges/5
 
