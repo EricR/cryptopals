@@ -6,19 +6,18 @@ import challenge_1_3
 
 if __name__ == '__main__':
 	max_score = 1.0
-	best_key = bytes()
-	best_plaintext = bytes()
-	f = open("4.txt", "r")
+	key = bytes()
+	plaintext = bytes()
 
-	for line in f:
-		ciphertext = bytes.fromhex(line)
-		key, plaintext, score = challenge_1_3.guess_with_frequency(ciphertext)
+	for line in open("4.txt", "r"):
+		guessed_key, guessed_plaintext, score = challenge_1_3.guess_with_frequency(
+			bytes.fromhex(line))
 
 		if score > max_score:
 			max_score = score
-			best_key = key
-			best_plaintext = plaintext
+			key = guessed_key
+			plaintext = guessed_plaintext
 
-	print("Key      : {}".format(best_key))
-	print("Plaintext: {}".format(best_plaintext))
+	print("Key      : {}".format(key))
+	print("Plaintext: {}".format(plaintext))
 	print("Score    : {}".format(max_score))

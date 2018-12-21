@@ -54,27 +54,28 @@ def frequency_score(plaintext):
 	return score
 
 def guess_with_frequency(ciphertext):
-	best_key = bytes()
-	best_plaintext = bytes()
+	key = bytes()
+	plaintext = bytes()
 	max_score = 1.0
 
 	for i in range(255):
-		key = bytes.fromhex('{0:02x}'.format(i))
-		plaintext = challenge_1_2.fixed_xor(key * len(ciphertext), ciphertext)
-		score = frequency_score(plaintext)
+		# Guess a repeating key and record the frequency score
+		guessed_key = bytes.fromhex('{0:02x}'.format(i))
+		guessed_plaintext = challenge_1_2.fixed_xor(guessed_key * len(ciphertext),
+			ciphertext)
+		score = frequency_score(guessed_plaintext)
 
 		if score > max_score:
 			max_score = score
-			best_key = key
-			best_plaintext = plaintext
+			key = guessed_key
+			plaintext = guessed_plaintext
 
-	return best_key, best_plaintext, max_score
+	return key, plaintext, max_score
 
 if __name__ == '__main__':
 	ciphertext = bytes.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
-	
-	key, plaintext, max_score = guess_with_frequency(ciphertext)
+	key, plaintext, score = guess_with_frequency(ciphertext)
 
 	print("Key      : {}".format(key))
 	print("Plaintext: {}".format(plaintext))
-	print("Score    : {}".format(max_score))
+	print("Score    : {}".format(score))

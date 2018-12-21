@@ -3,7 +3,6 @@
 # https://cryptopals.com/sets/1/challenges/2
 
 import unittest
-import base64
 
 class Challenge1_2(unittest.TestCase):
 	def test_fixed_xor(self):
