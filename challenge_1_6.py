@@ -46,7 +46,8 @@ def avg_hamming_distance(bytes1, block_size):
 
 	for block in to_blocks(bytes1, block_size):
 		if prev_block != None and len(block) == len(prev_block):
-			distances.append(hamming_distance(block, prev_block) / len(block))
+			distance = hamming_distance(block, prev_block)
+			distances.append(distance / len(block))
 		prev_block = block
 
 	return sum(distances) / len(distances)
