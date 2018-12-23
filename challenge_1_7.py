@@ -3,7 +3,7 @@
 # https://cryptopals.com/sets/1/challenges/7
 #
 # Implementation of AES based on FIPS-197. Makes no effort to mitigate side-
-# channel attacks.
+# channel attacks, useful for educational purposes only.
 
 import base64
 import unittest
