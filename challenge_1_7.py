@@ -6,6 +6,7 @@
 # channel attacks.
 
 import base64
+import unittest
 
 class AES():
 	# Number of rounds per key length (Nr)
@@ -127,6 +128,7 @@ class AES():
 			self.__inv_shift_rows()
 			self.__inv_sub_bytes()
 
+		# Apply first round last
 		self.__add_round_key(0)
 
 		return bytes(sum(self.state, []))
@@ -135,7 +137,7 @@ class AES():
 		"""
 		Prepares the key schedule (list of round keys) by expanding a given key.
 		"""
-		tmp = [0x00 for col in range(4)]
+		tmp = [0x00 for n in range(4)]
 		round_keys = bytearray(self.expansion_per_keysize[len(key)])
 
 		# First round key is just the key itself
@@ -187,7 +189,7 @@ class AES():
 
 	def __sub_bytes(self):
 		"""
-		Substitutes state values with s-box values.
+		Substitutes state values with S-box values.
 		"""
 		for i in range(4):
 			for j in range(self.nb):
@@ -213,14 +215,14 @@ class AES():
 			tmp = self.state[i][0] ^ self.state[i][1] ^ self.state[i][2] ^ self.state[i][3]
 			first = self.state[i][0]
 
-			self.state[i][0] ^= tmp ^ xtime(self.state[i][0] ^ self.state[i][1])
-			self.state[i][1] ^= tmp ^ xtime(self.state[i][1] ^ self.state[i][2])
-			self.state[i][2] ^= tmp ^ xtime(self.state[i][2] ^ self.state[i][3])
-			self.state[i][3] ^= tmp ^ xtime(self.state[i][3] ^ first)
+			self.state[i][0] ^= xtime(self.state[i][0] ^ self.state[i][1]) ^ tmp
+			self.state[i][1] ^= xtime(self.state[i][1] ^ self.state[i][2]) ^ tmp
+			self.state[i][2] ^= xtime(self.state[i][2] ^ self.state[i][3]) ^ tmp
+			self.state[i][3] ^= xtime(self.state[i][3] ^ first) ^ tmp
 
 	def __inv_sub_bytes(self):
 		"""
-		Substitutes state values with inverse s-box values.
+		Substitutes state values with inverse S-box values.
 		"""
 		for i in range(4):
 			for j in range(self.nb):
@@ -254,6 +256,33 @@ class AES():
 			self.state[i][3] ^= v
 
 		self.__mix_columns()
+
+class Challenge1_7(unittest.TestCase):
+	def test_encrypt(self):
+		cipher = AES(bytes.fromhex("10a58869d74be5a374cf867cfb473859"))
+		ciphertext = cipher.encrypt(bytes.fromhex("00000000000000000000000000000000"))
+		self.assertEqual(ciphertext, bytes.fromhex("6d251e6944b051e04eaa6fb4dbf78465"))
+
+		cipher = AES(bytes.fromhex("e9f065d7c13573587f7875357dfbb16c53489f6a4bd0f7cd"))
+		ciphertext = cipher.encrypt(bytes.fromhex("00000000000000000000000000000000"))
+		self.assertEqual(ciphertext, bytes.fromhex("0956259c9cd5cfd0181cca53380cde06"))
+
+		cipher = AES(bytes.fromhex("c47b0294dbbbee0fec4757f22ffeee3587ca4730c3d33b691df38bab076bc558"))
+		ciphertext = cipher.encrypt(bytes.fromhex("00000000000000000000000000000000"))
+		self.assertEqual(ciphertext, bytes.fromhex("46f2fb342d6f0ab477476fc501242c5f"))
+
+	def test_decrypt(self):
+		cipher = AES(bytes.fromhex("10a58869d74be5a374cf867cfb473859"))
+		ciphertext = cipher.decrypt(bytes.fromhex("6d251e6944b051e04eaa6fb4dbf78465"))
+		self.assertEqual(ciphertext, bytes.fromhex("00000000000000000000000000000000"))
+
+		cipher = AES(bytes.fromhex("e9f065d7c13573587f7875357dfbb16c53489f6a4bd0f7cd"))
+		ciphertext = cipher.decrypt(bytes.fromhex("0956259c9cd5cfd0181cca53380cde06"))
+		self.assertEqual(ciphertext, bytes.fromhex("00000000000000000000000000000000"))
+
+		cipher = AES(bytes.fromhex("c47b0294dbbbee0fec4757f22ffeee3587ca4730c3d33b691df38bab076bc558"))
+		ciphertext = cipher.decrypt(bytes.fromhex("46f2fb342d6f0ab477476fc501242c5f"))
+		self.assertEqual(ciphertext, bytes.fromhex("00000000000000000000000000000000"))
 
 def as_blocks(list1, size):
 	return [list1[i:i + size] for i in range(0, len(list1), size)]
