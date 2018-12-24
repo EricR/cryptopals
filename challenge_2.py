@@ -1,10 +1,10 @@
-# Challenge 1.2 Fixed XOR
+# Challenge 2 - Fixed XOR
 #
 # https://cryptopals.com/sets/1/challenges/2
 
 import unittest
 
-class Challenge1_2(unittest.TestCase):
+class Challenge2(unittest.TestCase):
     def test_fixed_xor(self):
         bytes1 = bytes.fromhex("1c0111001f010100061a024b53535009181c")
         bytes2 = bytes.fromhex("746865206b696420646f6e277420706c6179")

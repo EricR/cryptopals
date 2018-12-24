@@ -1,8 +1,8 @@
-# Challenge 1.3 Single-byte XOR cipher
+# Challenge 3 - Single-byte XOR cipher
 #
 # https://cryptopals.com/sets/1/challenges/3
 
-import challenge_1_2
+import challenge_2
 from collections import Counter
 
 lettersByFreq = {
@@ -61,7 +61,7 @@ def guess_with_frequency(ciphertext):
     for i in range(255):
         # Guess a repeating key and record the frequency score
         guessed_key = bytes.fromhex('{0:02x}'.format(i))
-        guessed_plaintext = challenge_1_2.fixed_xor(guessed_key * len(ciphertext),
+        guessed_plaintext = challenge_2.fixed_xor(guessed_key * len(ciphertext),
             ciphertext)
         score = frequency_score(guessed_plaintext)
 

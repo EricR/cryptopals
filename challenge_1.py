@@ -1,11 +1,11 @@
-# Challenge 1.1 Convert hex to base64
+# Challenge 1 - Convert hex to base64
 #
 # https://cryptopals.com/sets/1/challenges/1
 
 import unittest
 import base64
 
-class Challenge1_1(unittest.TestCase):
+class Challenge1(unittest.TestCase):
     def test_convert_hex_to_base64(self):
         result = hex_to_base64("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")
 

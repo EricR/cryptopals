@@ -1,4 +1,4 @@
-# Challenge 1.7 AES in ECB mode
+# Challenge 7 - AES in ECB mode
 #
 # https://cryptopals.com/sets/1/challenges/7
 #
@@ -82,7 +82,7 @@ class AES():
 
         self.nk = self.words_per_keysize[len(key)]
         self.nr = self.rounds_per_keysize[len(key)]
-        self.state = [[0x00 for col in range(4)] for row in range(self.nb)]
+        self.state = [bytes(4) for row in range(self.nb)]
         self.key_schedule = self.__expand_key(key)
 
     def encrypt(self, plaintext):
@@ -137,7 +137,7 @@ class AES():
         """
         Prepares the key schedule (list of round keys) by expanding a given key.
         """
-        tmp = [0x00 for n in range(4)]
+        tmp = bytearray(4)
         round_keys = bytearray(self.expansion_per_keysize[len(key)])
 
         # First round key is just the key itself
@@ -257,7 +257,7 @@ class AES():
 
         self.__mix_columns()
 
-class Challenge1_7(unittest.TestCase):
+class Challenge7(unittest.TestCase):
     def test_encrypt(self):
         cipher = AES(bytes.fromhex("10a58869d74be5a374cf867cfb473859"))
         ciphertext = cipher.encrypt(bytes.fromhex("00000000000000000000000000000000"))
@@ -284,8 +284,8 @@ class Challenge1_7(unittest.TestCase):
         ciphertext = cipher.decrypt(bytes.fromhex("46f2fb342d6f0ab477476fc501242c5f"))
         self.assertEqual(ciphertext, bytes.fromhex("00000000000000000000000000000000"))
 
-def as_blocks(list1, size):
-    return [list1[i:i + size] for i in range(0, len(list1), size)]
+def as_blocks(data, size):
+    return [data[i:i + size] for i in range(0, len(data), size)]
 
 def xtime(n):
     if n & 0x80:

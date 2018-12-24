@@ -1,8 +1,8 @@
-# Challenge 1.4 Detect single-character XOR
+# Challenge 4 - Detect single-character XOR
 #
 # https://cryptopals.com/sets/1/challenges/4
 
-import challenge_1_3
+import challenge_3
 
 if __name__ == '__main__':
     max_score = 1.0
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     plaintext = bytes()
 
     for line in open("4.txt", "r"):
-        guessed_key, guessed_plaintext, score = challenge_1_3.guess_with_frequency(
+        guessed_key, guessed_plaintext, score = challenge_3.guess_with_frequency(
             bytes.fromhex(line))
 
         if score > max_score:

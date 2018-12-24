@@ -1,9 +1,9 @@
-# Challenge 1.8 Detect AES in ECB mode
+# Challenge 8 - Detect AES in ECB mode
 #
 # https://cryptopals.com/sets/1/challenges/8
 
 import base64
-import challenge_1_7
+import challenge_7
 
 def detect_aes_ecb(blocks):
     histogram = {}
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     for line in open("8.txt", "r"):
         ciphertext = base64.b64decode(line)
-        blocks = challenge_1_7.as_blocks(ciphertext, 16)
+        blocks = challenge_7.as_blocks(ciphertext, 16)
         guessed_block, score = detect_aes_ecb(blocks)
 
         if score > max_score:

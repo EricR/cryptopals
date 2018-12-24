@@ -1,13 +1,13 @@
-# Challenge 1.6 Break repeating-key XOR
+# Challenge 6 - Break repeating-key XOR
 #
 # https://cryptopals.com/sets/1/challenges/6
 
 import base64
-import challenge_1_3
-import challenge_1_5
+import challenge_3
+import challenge_5
 import unittest
 
-class Challenge1_6(unittest.TestCase):
+class Challenge6(unittest.TestCase):
     def test_hamming_distance(self):
         self.assertEqual(hamming_distance(bytes("this is a test", 'ascii'),
             bytes("wokka wokka!!!", 'ascii')), 37)
@@ -84,9 +84,9 @@ if __name__ == '__main__':
     key = bytearray()
     
     for block in transpose_blocks(ciphertext, keysize):
-        key += challenge_1_3.guess_with_frequency(block)[0]
+        key += challenge_3.guess_with_frequency(block)[0]
 
-    plaintext = challenge_1_5.repeating_xor(key, ciphertext).decode()
+    plaintext = challenge_5.repeating_xor(key, ciphertext).decode()
 
     print("Key      : {}".format(key))
     print("Plaintext: {}".format(plaintext))

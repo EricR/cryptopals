@@ -1,10 +1,10 @@
-# Challenge 1.5 Implement repeating-key XOR
+# Challenge 5 - Implement repeating-key XOR
 #
 # https://cryptopals.com/sets/1/challenges/5
 
 import unittest
 
-class Challenge1_5(unittest.TestCase):
+class Challenge5(unittest.TestCase):
     def test_repeating_xor(self):
         key = bytes("ICE", 'ascii')
         plaintext = bytes("Burning 'em, if you ain't quick and nimble\n" +
