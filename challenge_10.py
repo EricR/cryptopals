@@ -50,6 +50,19 @@ class AES_CBC:
 
         return decrypted
 
+class Challenge10(unittest.TestCase):
+    def test_encrypt(self):
+        iv = bytes.fromhex("000102030405060708090A0B0C0D0E0F")
+        cipher = AES_CBC(bytes.fromhex("2b7e151628aed2a6abf7158809cf4f3c"), iv)
+        ciphertext = cipher.encrypt(bytes.fromhex("6bc1bee22e409f96e93d7e117393172a"))
+        self.assertEqual(ciphertext, [bytes.fromhex("7649abac8119b246cee98e9b12e9197d")])
+
+    def test_decrypt(self):
+        iv = bytes.fromhex("7649ABAC8119B246CEE98E9B12E9197D")
+        cipher = AES_CBC(bytes.fromhex("2b7e151628aed2a6abf7158809cf4f3c"), iv)
+        plaintext = cipher.decrypt(bytes.fromhex("5086cb9b507219ee95db113a917678b2"))
+        self.assertEqual(plaintext, [bytes.fromhex("ae2d8a571e03ac9c9eb76fac45af8e51")])
+
 if __name__ == '__main__':
     key = bytes("YELLOW SUBMARINE", 'ascii')
     iv = bytes.fromhex("00000000000000000000000000000000")
