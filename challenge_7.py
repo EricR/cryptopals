@@ -30,7 +30,8 @@ class AES():
         32: 240
     }
 
-    # Number of columns (Nb)
+    # Number of columns (Nb), derived from the block size (always 128 bits)
+    # divided by 32.
     nb = 4
 
     # Round constants (only need max 11 for AES-128, AES-192, and AES-256)
@@ -290,15 +291,28 @@ class Challenge7(unittest.TestCase):
         self.assertEqual(ciphertext, bytes.fromhex("00000000000000000000000000000000"))
 
 def as_blocks(data, size):
+    """
+    Breaks up a given list into blocks of a given size.
+    """
     return [data[i:i + size] for i in range(0, len(data), size)]
 
 def xtime(n):
-    if n & 0x80:
-        return ((n << 1) ^ 0x1B) & 0xFF
+    """
+    Multiplies n by 2 in GF(2^8), which means we simply multiply by 2 and when
+    an overflow would occur, we subtract (XOR) the product from 0x1b (AES'
+    irreducible polynomial, denoted as m(x)) modulo 256.
+    """
+    if n < 128:
+        # Already reduced form
+        return n * 2
     else:
-        return n << 1
+        # Need to reduce, so subtract (XOR) the product from m(x) mod 256
+        return ((n * 2) ^ 0x1b) % 256
 
 def rotate_word(word):
+    """
+    Rotates a list of 4 bytes to the left.
+    """
     first = word[0]
     word[0] = word[1]
     word[1] = word[2]
