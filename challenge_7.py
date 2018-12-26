@@ -299,7 +299,7 @@ def as_blocks(data, size):
 def xtime(n):
     """
     Multiplies n by 2 in GF(2^8), which means we simply multiply by 2 and when
-    an overflow would occur, we subtract (XOR) the product from 0x1b (AES'
+    an overflow would occur, we subtract (XOR) the product by 0x1b (AES'
     irreducible polynomial, denoted as m(x)) modulo 256.
     """
     if n < 128:
