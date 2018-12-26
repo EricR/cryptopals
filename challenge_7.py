@@ -92,7 +92,7 @@ class AES():
         # Initial state is the provided plaintext
         self.state = as_blocks(list(plaintext), self.nb)
 
-        # Apply first round
+        # Add initial round key
         self.__add_round_key(0)
 
         # Apply rounds nr-1
@@ -128,7 +128,7 @@ class AES():
             self.__inv_shift_rows()
             self.__inv_sub_bytes()
 
-        # Apply first round last
+        # Add initial round key last
         self.__add_round_key(0)
 
         return bytes(sum(self.state, []))
@@ -144,31 +144,33 @@ class AES():
         for i, n in enumerate(key):
             round_keys[i] = n
 
-        # Generate all other round keys
+        # Generate all other round keys (starting from nk, since we already
+        # have our first key)
         for i in range(self.nk, self.nb * (self.nr+1)):
-            # Start with the first four bytes from the last round key
+            # Get the previous 32-bit word and store it in tmp
             j = (i-1) * 4
             for k in range(4):
                 tmp[k] = round_keys[j+k]
 
             if i % self.nk == 0:
-                # Left shift 4 bytes
+                # Rotate tmp to the left
                 rotate_word(tmp)
 
-                # Apply S-box to 4 bytes
+                # Substitute values of tmp by S-box values
                 for k in range(4):
                     tmp[k] = self.s_box[tmp[k]]
 
-                # Apply round constant
+                # Apply round constant to the first byte of tmp
                 tmp[0] ^= self.rcon[int(i/self.nk)]
 
             # AES-256 (when nk == 8) applies the S-box a bit differently
             if self.nk == 8 and i % self.nk == 4:
-                # Apply S-box to 4 bytes
+                # Substitute values of tmp by S-box values
                 for k in range(4):
                     tmp[k] = self.s_box[tmp[k]]
 
-            # Add new round key
+            # Add a new round key, which is equal to the XOR of the 32-bit word
+            # Nk positions earlier (round_keys[k+m] below) and tmp
             j = i * 4
             k = (i - self.nk) * 4
             for m in range(4):
@@ -184,6 +186,9 @@ class AES():
         """
         for i in range(4):
             for j in range(self.nb):
+                # Given a round number, state row (i), and state column (j),
+                # determine the correct key schedule offset (k) and add the
+                # round key bytes to the state
                 k = (round_num * self.nb * 4) + (i * self.nb) + j
                 self.state[i][j] ^= self.key_schedule[k]
 
