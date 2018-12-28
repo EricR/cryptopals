@@ -48,7 +48,7 @@ class AES_CBC:
         # First decrypted block is the result of decrypt(blocks[0]) ^ IV
         decrypted[0] = challenge_2.fixed_xor(self.cipher.decrypt(blocks[0]), self.iv)
 
-        return b''.join(decrypted)
+        return challenge_9.remove_pkcs7(b''.join(decrypted), 16)
 
 class Challenge10(unittest.TestCase):
     def test_encrypt(self):

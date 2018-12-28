@@ -36,7 +36,7 @@ class AES_ECB:
         for i in range(len(blocks)):
             blocks[i] = self.cipher.decrypt(blocks[i])
 
-        return b''.join(blocks)
+        return challenge_9.remove_pkcs7(b''.join(blocks), 16)
 
 def random_key_or_iv():
     return secrets.token_bytes(16)

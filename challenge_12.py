@@ -34,7 +34,7 @@ def determine_block_and_plaintext_size(oracle):
     initial_size = len(oracle(bytes()))
     padding = 0
 
-    for i in range(1,128):
+    for i in range(0,256):
         ciphertext = oracle(bytes('A' * i, 'ascii'))
 
         # Watch for a new block being appended
