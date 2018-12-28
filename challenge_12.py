@@ -19,8 +19,6 @@ class Challenge12(unittest.TestCase):
         self.assertEqual(pt_size, len(secret))
         mode = detect_mode(encryption_oracle, b_size)
         self.assertEqual(mode, 'ecb')
-        print("Ciphertext:\n{}".format(encryption_oracle(secret)))
-        print("")
         plaintext = recover_plaintext(encryption_oracle, pt_size, b_size)
         self.assertEqual(plaintext, secret)
 
@@ -75,10 +73,10 @@ def recover_plaintext(oracle, text_size, block_size):
         # Guess the unknown byte (n)
         for n in [bytes([n]) for n in range(256)]:
             guess = oracle(padding + plaintext + n)[block_start:block_end]
-
             if guess == block:
                 plaintext += n
-                print("Recovered {}/{}: {}".format(i, text_size, bytes(plaintext)), end="\r")
+                print("Recovered {}/{}: {}".format(i, text_size, bytes(plaintext)),
+                    end="\r")
                 break
 
     print("")
