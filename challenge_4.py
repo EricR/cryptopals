@@ -19,5 +19,5 @@ if __name__ == '__main__':
             plaintext = guessed_plaintext
 
     print("Key      : {}".format(key))
-    print("Plaintext: {}".format(plaintext))
+    print("Plaintext: {}".format(plaintext.decode()))
     print("Score    : {}".format(max_score))

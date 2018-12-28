@@ -323,7 +323,9 @@ if __name__ == '__main__':
     cipher = AES(bytes("YELLOW SUBMARINE", 'ascii'))
     ciphertext_hex = open("7.txt", "r").read()
     ciphertext = base64.b64decode(ciphertext_hex)
+    plaintext = ""
 
     for block in as_blocks(ciphertext, 16):
-        plaintext = cipher.decrypt(block)
-        print(plaintext)
+        plaintext += cipher.decrypt(block).decode()
+
+    print(plaintext)

@@ -14,7 +14,6 @@ class Challenge2(unittest.TestCase):
 
 def fixed_xor(bytes1, bytes2):
     assert(len(bytes1) == len(bytes2))
-
     return bytes([bytes1[i] ^ bytes2[i] for i in range(len(bytes1))])
 
 if __name__ == '__main__':

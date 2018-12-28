@@ -70,4 +70,4 @@ if __name__ == '__main__':
     ciphertext_hex = open("10.txt", "r").read()
     ciphertext = base64.b64decode(ciphertext_hex)
 
-    print("Plaintext: {}".format(cipher.decrypt(ciphertext)))
+    print(cipher.decrypt(ciphertext).decode())

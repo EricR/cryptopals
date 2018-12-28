@@ -12,7 +12,7 @@ class Challenge1(unittest.TestCase):
         self.assertEqual(result, "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t")
 
 def hex_to_base64(str1):
-    return base64.b64encode(bytes.fromhex(str1)).decode("ascii") 
+    return base64.b64encode(bytes.fromhex(str1)).decode() 
 
 if __name__ == '__main__':
     unittest.main()
