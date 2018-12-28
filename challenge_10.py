@@ -17,7 +17,7 @@ class AES_CBC:
         self.iv = iv
 
     def encrypt(self, plaintext):
-        # Pad the plaintext so that it fits evenly into blocks
+        # Apply padding so all blocks end up as 16 bytes
         plaintext = challenge_9.pkcs7(plaintext, 16)
 
         # Break the plaintext up into blocks
@@ -30,7 +30,7 @@ class AES_CBC:
         for i in range(1, len(blocks)):
             blocks[i] = self.cipher.encrypt(challenge_2.fixed_xor(blocks[i], blocks[i-1]))
 
-        return blocks
+        return b''.join(blocks)
 
     def decrypt(self, ciphertext):
         if len(ciphertext) % 16 != 0:
@@ -48,7 +48,7 @@ class AES_CBC:
         # First decrypted block is the result of decrypt(blocks[0]) ^ IV
         decrypted[0] = challenge_2.fixed_xor(self.cipher.decrypt(blocks[0]), self.iv)
 
-        return decrypted
+        return b''.join(decrypted)
 
 class Challenge10(unittest.TestCase):
     def test_encrypt(self):
