@@ -14,9 +14,10 @@ secret = base64.b64decode("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd2" +
 
 class Challenge12(unittest.TestCase):
     def test_plaintext_recovery(self):
-        b_size, pt_size = determine_block_and_plaintext_size(encryption_oracle)
+        b_size, pt_size, padding = determine_block_stats(encryption_oracle)
         self.assertEqual(b_size, 16)
         self.assertEqual(pt_size, len(secret))
+        self.assertEqual(padding, 6)
         mode = detect_mode(encryption_oracle, b_size)
         self.assertEqual(mode, 'ecb')
         plaintext = recover_plaintext(encryption_oracle, pt_size, b_size)
@@ -30,7 +31,7 @@ def encryption_oracle(plaintext):
     key = deterministic_random_key()
     return challenge_11.AES_ECB(key).encrypt(plaintext + secret)
 
-def determine_block_and_plaintext_size(oracle):
+def determine_block_stats(oracle):
     initial_size = len(oracle(bytes()))
     padding = 0
 
@@ -43,7 +44,7 @@ def determine_block_and_plaintext_size(oracle):
             n_blocks = initial_size // block_size
             plaintext_size = n_blocks * block_size - padding
 
-            return block_size, plaintext_size
+            return block_size, plaintext_size, padding
         else:
             padding += 1
 
