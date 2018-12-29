@@ -78,9 +78,9 @@ if __name__ == '__main__':
     # Try another way of doing this. This version relies on generating a block
     # full of PKCS#7 padding and doing more block "cut and pasting"
 
-    # When input length is 13, the second block ends in "role=". The last four
+    # When input length is 13, the second block ends in "role=". The last three
     # chars will become part of the email
-    ciphertext = new_profile(bytes("AAAAAAAAA.com", 'ascii'))
+    ciphertext = new_profile(bytes("AAAAAAAAAAcom", 'ascii'))
     role_block = challenge_7.as_blocks(ciphertext, b_size)[1]
 
     # When input length is 15, the second block starts with last 5 chars
