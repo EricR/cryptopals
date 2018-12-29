@@ -27,7 +27,7 @@ class AES_ECB:
 
     def decrypt(self, ciphertext):
         if len(ciphertext) % 16 != 0:
-            raise ValueError("Invalid length if ciphertext")
+            raise ValueError("Invalid length of ciphertext")
 
         # Break the ciphertext up into blocks
         blocks = challenge_7.as_blocks(ciphertext, 16)
