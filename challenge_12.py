@@ -8,10 +8,9 @@ import unittest
 import challenge_7
 import challenge_11
 
-# secret = base64.b64decode("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd2" +
-#     "4gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdX" +
-#     "N0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
-secret = bytes("test", 'ascii')
+secret = base64.b64decode("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd2" +
+    "4gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdX" +
+    "N0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
 
 class Challenge12(unittest.TestCase):
     def test_determine_block_stats(self):
@@ -37,11 +36,11 @@ def encryption_oracle(plaintext):
     return challenge_11.AES_ECB(key).encrypt(plaintext + secret)
 
 def determine_block_stats(oracle):
-    initial_size = len(oracle(bytes()))
+    initial_size = len(oracle(b""))
     padding = 0
 
     for i in range(0,256):
-        ciphertext = oracle(bytes('A' * i, 'ascii'))
+        ciphertext = oracle(b"A" * i)
 
         # Watch for a new block being appended
         if len(ciphertext) > initial_size:
@@ -70,7 +69,7 @@ def recover_plaintext(oracle):
         # Pad so that AES-128-ECB(padding || recovered plaintext) leaves only
         # one unknown byte in the current block at a time
         padding_len = (block_size - i) % block_size
-        padding = bytes('A' * padding_len, 'ascii')
+        padding = b"A" * padding_len
 
         # Keep track of which block we're working on
         block_start = (len(plaintext) // block_size) * block_size
@@ -87,7 +86,7 @@ def recover_plaintext(oracle):
     return bytes(plaintext)
 
 def detect_mode(oracle):
-    plaintext = bytes("A" * 128, 'ascii')
+    plaintext = b"A" * 128
     return challenge_11.detect_mode(oracle(plaintext))
 
 if __name__ == '__main__':

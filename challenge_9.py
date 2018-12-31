@@ -6,11 +6,11 @@ import unittest
 
 class Challenge9(unittest.TestCase):
     def test_pkcs7(self):
-        self.assertEqual(pkcs7(bytes("YELLOW SUBMARINE", 'ascii'), 20),
+        self.assertEqual(pkcs7(b"YELLOW SUBMARINE", 20),
             b"YELLOW SUBMARINE\x04\x04\x04\x04")
-        self.assertEqual(pkcs7(bytes("AAAAAAAAAAAAAAA", 'ascii'), 16),
+        self.assertEqual(pkcs7(b"AAAAAAAAAAAAAAA", 16),
             b"AAAAAAAAAAAAAAA\x01")
-        self.assertEqual(pkcs7(bytes("AAAAAAAAAAAAAAAA", 'ascii'), 16),
+        self.assertEqual(pkcs7(b"AAAAAAAAAAAAAAAA", 16),
             b"AAAAAAAAAAAAAAAA\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10")
 
     def test_remove_pkcs7(self):

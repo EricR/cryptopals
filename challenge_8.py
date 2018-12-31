@@ -17,7 +17,7 @@ def detect_aes_ecb(blocks):
 
 if __name__ == '__main__':
     max_score = 0
-    block = bytes()
+    block = b""
 
     for line in open("8.txt", "r"):
         ciphertext = base64.b64decode(line)

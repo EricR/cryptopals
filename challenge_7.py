@@ -320,7 +320,7 @@ def rotate_word(word):
     word[3] = first
 
 if __name__ == '__main__':
-    cipher = AES(bytes("YELLOW SUBMARINE", 'ascii'))
+    cipher = AES(b"YELLOW SUBMARINE")
     ciphertext_hex = open("7.txt", "r").read()
     ciphertext = base64.b64decode(ciphertext_hex)
     plaintext = ""

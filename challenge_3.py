@@ -54,8 +54,8 @@ def frequency_score(plaintext):
     return score
 
 def guess_with_frequency(ciphertext):
-    key = bytes()
-    plaintext = bytes()
+    key = b""
+    plaintext = b""
     max_score = 1.0
 
     for i in range(255):

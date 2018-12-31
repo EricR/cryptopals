@@ -9,8 +9,7 @@ import unittest
 
 class Challenge6(unittest.TestCase):
     def test_hamming_distance(self):
-        self.assertEqual(hamming_distance(bytes("this is a test", 'ascii'),
-            bytes("wokka wokka!!!", 'ascii')), 37)
+        self.assertEqual(hamming_distance(b"this is a test", b"wokka wokka!!!"), 37)
 
 def bytes_to_bits(bytes1):
     return bin(int.from_bytes(bytes1, 'big'))

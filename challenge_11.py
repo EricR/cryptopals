@@ -64,7 +64,7 @@ def detect_mode(ciphertext):
         return "cbc"
     
 if __name__ == '__main__':
-    ciphertext = encryption_oracle(bytes("A" * 64, 'ascii'))
+    ciphertext = encryption_oracle(b"A" * 64)
     mode = detect_mode(ciphertext)
     
     print("Mode: {}".format(mode))

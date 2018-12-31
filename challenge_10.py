@@ -64,7 +64,7 @@ class Challenge10(unittest.TestCase):
         self.assertEqual(plaintext, [bytes.fromhex("ae2d8a571e03ac9c9eb76fac45af8e51")])
 
 if __name__ == '__main__':
-    key = bytes("YELLOW SUBMARINE", 'ascii')
+    key = b"YELLOW SUBMARINE"
     iv = bytes.fromhex("00000000000000000000000000000000")
     cipher = AES_CBC(key, iv)
     ciphertext_hex = open("10.txt", "r").read()

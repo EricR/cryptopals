@@ -26,6 +26,7 @@ def deterministic_random_bytes():
 def encryption_oracle(plaintext):
     key = challenge_12.deterministic_random_key()
     prefix = deterministic_random_bytes()
+
     return challenge_11.AES_ECB(key).encrypt(prefix + plaintext
         + challenge_12.secret)
 
@@ -34,10 +35,10 @@ def determine_offset(oracle, block_size):
     Determines the offset in which user input starts within the ciphertext by
     analyzing what injected padding causes a repeated block.
     """
-    original_ciphertext = oracle(bytes())
+    original_ciphertext = oracle(b"")
 
     for i in range(1, 128):
-        ciphertext = oracle(bytes('A', 'ascii') * i)
+        ciphertext = oracle(b"A" * i)
         blocks = challenge_7.as_blocks(ciphertext, block_size)
         last = None
 
@@ -68,7 +69,7 @@ def recover_plaintext(oracle):
         # Pad so that AES-128-ECB(random-prefix || padding || recovered plaintext)
         # leaves only one unknown byte in the current block at a time
         padding_len = (block_size - i) % block_size + extra_padding
-        padding = bytes('A' * padding_len, 'ascii')
+        padding = b"A" * padding_len
 
         # Keep track of which block we're working on
         block_n = len(plaintext) // block_size + extra_blocks
@@ -82,6 +83,7 @@ def recover_plaintext(oracle):
             if guess == block:
                 plaintext += n
                 break
+
     return plaintext
 
 if __name__ == '__main__':

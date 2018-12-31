@@ -6,8 +6,8 @@ import challenge_3
 
 if __name__ == '__main__':
     max_score = 1.0
-    key = bytes()
-    plaintext = bytes()
+    key = b""
+    plaintext = b""
 
     for line in open("4.txt", "r"):
         guessed_key, guessed_plaintext, score = challenge_3.guess_with_frequency(

@@ -22,7 +22,7 @@ def forge_block(offset, plaintext, oracle):
     padding.
     """
     b_size, _, _ = challenge_12.determine_block_stats(oracle)
-    new_padding = bytes("A" * (b_size - offset), 'ascii')
+    new_padding = b"A" * (b_size - offset)
     payload = new_padding + challenge_9.pkcs7(plaintext, b_size)
     ciphertext = oracle(payload)
 
@@ -34,7 +34,7 @@ def forge_padding_block(oracle):
     the length of a plaintext is an integer multiple of the block size)
     """
     b_size, pt_size, padding = challenge_12.determine_block_stats(oracle)
-    new_padding = bytes("A" *  padding, 'ascii')
+    new_padding = b"A" *  padding
 
     return challenge_7.as_blocks(oracle(new_padding), b_size)[-1]
 
@@ -65,10 +65,10 @@ def parse_key_value(str1):
 
 if __name__ == '__main__':
     # Forge a block with an offset of 6 to compensate for "email="
-    forgery = forge_block(6, bytes("admin", 'ascii'), new_profile)
+    forgery = forge_block(6, b"admin", new_profile)
 
     # When email length is 13, the second block ends in "role="
-    ciphertext = new_profile(bytes("test@test.com", 'ascii'))
+    ciphertext = new_profile(b"test@test.com")
     b_size, _, _ = challenge_12.determine_block_stats(new_profile)
     blocks = challenge_7.as_blocks(ciphertext, b_size)
 
@@ -82,20 +82,20 @@ if __name__ == '__main__':
 
     # When input length is 13, the second block ends in "role=". The last 3
     # chars will become part of the email
-    ciphertext = new_profile(bytes("AAAAAAAAAAcom", 'ascii'))
+    ciphertext = new_profile(b"AAAAAAAAAAcom")
     role_block = challenge_7.as_blocks(ciphertext, b_size)[1]
 
     # When input length is 15, the second block starts with last 5 chars
-    ciphertext = new_profile(bytes("AAAAAAAAAAadmin", 'ascii'))
+    ciphertext = new_profile(b"AAAAAAAAAAadmin")
     admin_block = challenge_7.as_blocks(ciphertext, b_size)[1]
 
     # Grab a block that contains "=" so key value parsing still works
-    ciphertext = new_profile(bytes("AAAAAAAAAA", 'ascii'))
+    ciphertext = new_profile(b"AAAAAAAAAA")
     kv_end_block = challenge_7.as_blocks(ciphertext, b_size)[0]
 
     # Grab a block that contains an email key value minus the last 4 chars
     # (those come from role_block as described above)
-    ciphertext = new_profile(bytes("test@test.", 'ascii'))
+    ciphertext = new_profile(b"test@test.")
     email_block = challenge_7.as_blocks(ciphertext, b_size)[0]
 
     # Forge a block full of PKCS#7 padding so we don't end up with invalid

@@ -6,9 +6,9 @@ import unittest
 
 class Challenge5(unittest.TestCase):
     def test_repeating_xor(self):
-        key = bytes("ICE", 'ascii')
-        plaintext = bytes("Burning 'em, if you ain't quick and nimble\n" +
-            "I go crazy when I hear a cymbal", "ascii")
+        key = b"ICE"
+        plaintext = b"Burning 'em, if you ain't quick and nimble\nI go crazy "
+        plaintext += b"when I hear a cymbal"
 
         self.assertEqual(repeating_xor(key, plaintext).hex(),
             "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a2622632427" +
