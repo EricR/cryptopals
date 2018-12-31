@@ -7,8 +7,27 @@ import sys
 import challenge_10
 
 def flip_cbc_bits(ciphertext, idx, old_char, new_char):
+    """
+    Flipping a bit in one block of ciphertext will corrupt the block, but will
+    cause the corresponding bit of plaintext in the next block to flip. This is
+    because during decryption in CBC mode, a block's plaintext is XOR'd with
+    the previous block's ciphertext.
+
+
+             Ciphertext               Ciphertext
+                 |                         |
+                 |---------*               |---------*
+                 V         |               |         |
+    Key ---> Decryption    |  Key ---> Decryption    |
+                 |         |               |         |
+    IV ------->(XOR)       *------------>(XOR)       *------ ...
+                 |                         |
+                 V                         V
+             Plaintext                 Plaintext
+
+    """
     new_ciphertext = bytearray(ciphertext)
-    new_ciphertext[idx] = new_ciphertext[idx] ^ ord(old_char) ^ ord(new_char)
+    new_ciphertext[idx] ^= ord(old_char) ^ ord(new_char)
 
     return bytes(new_ciphertext)
 
