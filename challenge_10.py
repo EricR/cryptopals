@@ -69,5 +69,6 @@ if __name__ == '__main__':
     cipher = AES_CBC(key, iv)
     ciphertext_hex = open("10.txt", "r").read()
     ciphertext = base64.b64decode(ciphertext_hex)
+    plaintext = cipher.decrypt(ciphertext).decode()
 
-    print(cipher.decrypt(ciphertext).decode())
+    print(plaintext)

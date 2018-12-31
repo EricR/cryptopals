@@ -73,7 +73,9 @@ if __name__ == '__main__':
     blocks = challenge_7.as_blocks(ciphertext, b_size)
 
     # "Cut and paste" blocks to provide the desired ciphertext
-    print(get_profile(blocks[0] + blocks[1] + forgery))
+    profile1 = get_profile(blocks[0] + blocks[1] + forgery)
+
+    print(profile1)
 
     # Try another way of doing this. This version relies on generating a block
     # full of PKCS#7 padding and doing more block "cut and pasting"
@@ -100,5 +102,7 @@ if __name__ == '__main__':
     # padding
     padding_block = forge_padding_block(new_profile)
 
-    print(get_profile(email_block + role_block + admin_block + kv_end_block
-        + padding_block))
+    profile2 = get_profile(email_block + role_block + admin_block + kv_end_block
+        + padding_block)
+
+    print(profile2)
