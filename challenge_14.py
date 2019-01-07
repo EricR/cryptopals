@@ -90,5 +90,6 @@ def recover_plaintext(oracle):
 
     return plaintext
 
+
 if __name__ == '__main__':
     unittest.main()

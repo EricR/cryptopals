@@ -31,5 +31,6 @@ def repeating_xor(key, plaintext):
 
     return bytes(output)
 
+
 if __name__ == '__main__':
     unittest.main()

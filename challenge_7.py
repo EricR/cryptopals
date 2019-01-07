@@ -369,6 +369,7 @@ def rotate_word(word):
     word[2] = word[3]
     word[3] = first
 
+
 if __name__ == '__main__':
     cipher = AES(b"YELLOW SUBMARINE")
     ciphertext_hex = open("7.txt", "r").read()

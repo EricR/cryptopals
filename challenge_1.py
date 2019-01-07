@@ -20,5 +20,6 @@ class Challenge1(unittest.TestCase):
 def hex_to_base64(str1):
     return base64.b64encode(bytes.fromhex(str1)).decode()
 
+
 if __name__ == '__main__':
     unittest.main()

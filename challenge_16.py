@@ -72,6 +72,7 @@ def deterministic_random_iv():
     random.seed(345)
     return [random.getrandbits(8) for _ in range(16)]
 
+
 if __name__ == '__main__':
     ciphertext = new_comment(b"AAAAAAAAAAAAAAAA*admin*true")
     # Offset = 49 - 16 (block size) = 33

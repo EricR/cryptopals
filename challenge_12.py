@@ -95,5 +95,6 @@ def detect_mode(oracle):
     plaintext = b"A" * 128
     return challenge_11.detect_mode(oracle(plaintext))
 
+
 if __name__ == '__main__':
     unittest.main()

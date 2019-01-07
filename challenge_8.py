@@ -16,6 +16,7 @@ def detect_aes_ecb(blocks):
 
     return block, histogram[block]
 
+
 if __name__ == '__main__':
     max_score = 0
     block = b""

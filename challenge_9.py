@@ -64,5 +64,6 @@ def remove_pkcs7(data, block_size):
 
     raise PaddingError("Malformed PKCS#7 padding")
 
+
 if __name__ == '__main__':
     unittest.main()

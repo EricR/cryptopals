@@ -72,6 +72,7 @@ def sanitize_email(email):
 def parse_key_value(str1):
     return dict(item.split("=") for item in str1.split("&"))
 
+
 if __name__ == '__main__':
     # Forge a block with an offset of 6 to compensate for "email="
     forgery = forge_block(6, b"admin", new_profile)
