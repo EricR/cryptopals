@@ -3,8 +3,8 @@
 # https://cryptopals.com/sets/2/challenges/16
 
 import random
-import sys
 import challenge_10
+
 
 def flip_cbc_bits(ciphertext, idx, old_char, new_char):
     """
@@ -31,12 +31,14 @@ def flip_cbc_bits(ciphertext, idx, old_char, new_char):
 
     return bytes(new_ciphertext)
 
+
 def new_comment(user_input):
     key = deterministic_random_key()
     iv = deterministic_random_iv()
     comment = comment_for(user_input)
 
     return challenge_10.AES_CBC(key, iv).encrypt(comment)
+
 
 def is_admin_comment(ciphertext):
     key = deterministic_random_key()
@@ -45,21 +47,26 @@ def is_admin_comment(ciphertext):
 
     return b";admin=true;" in plaintext
 
+
 def comment_for(user_input):
     before = b"comment1=cooking%20MCs;userdata="
     after = b";comment2=%20like%20a%20pound%20of%20bacon"
-    
+
     return before + sanitize_user_input(user_input) + after
+
 
 def sanitize_user_input(user_input):
     return user_input.decode().translate({ord(c): None for c in ';='}).encode()
 
+
 def parse_key_value(str1):
     return dict(item.split("=") for item in str1.split(";"))
+
 
 def deterministic_random_key():
     random.seed(234)
     return [random.getrandbits(8) for _ in range(16)]
+
 
 def deterministic_random_iv():
     random.seed(345)

@@ -8,8 +8,10 @@ import challenge_9
 # since it seemed required to complete challenge 12 without resorting to
 # manually stripping PKCS#7 padding.
 
+
 def pkcs7(data, block_size):
     challenge_9.pkcs7(data, block_size)
+
 
 def remove_pkcs7(data, block_size):
     challenge_9.remove_pkcs7(data, block_size)
