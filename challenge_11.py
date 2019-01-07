@@ -8,6 +8,7 @@ import challenge_8
 import challenge_9
 import challenge_10
 
+
 class AES_ECB:
     def __init__(self, key):
         self.cipher = challenge_7.AES(key)
@@ -38,11 +39,14 @@ class AES_ECB:
 
         return challenge_9.remove_pkcs7(b''.join(blocks), 16)
 
+
 def random_key_or_iv():
     return secrets.token_bytes(16)
 
+
 def random_padding():
     return bytes([0x00 for _ in range(secrets.randbelow(10) + 1)])
+
 
 def encryption_oracle(plaintext):
     key = random_key_or_iv()
@@ -55,6 +59,7 @@ def encryption_oracle(plaintext):
         iv = random_key_or_iv()
         return challenge_10.AES_CBC(key, iv).encrypt(plaintext)
 
+
 def detect_mode(ciphertext):
     blocks = challenge_7.as_blocks(ciphertext, 16)
 
@@ -62,9 +67,10 @@ def detect_mode(ciphertext):
         return "ecb"
     else:
         return "cbc"
-    
+
+
 if __name__ == '__main__':
     ciphertext = encryption_oracle(b"A" * 64)
     mode = detect_mode(ciphertext)
-    
+
     print("Mode: {}".format(mode))

@@ -34,6 +34,7 @@ lettersByFreq = {
     "z": 0.074,
 }
 
+
 def frequency_score(plaintext):
     """
     Returns a score representing how closely letter frequencies match the
@@ -53,6 +54,7 @@ def frequency_score(plaintext):
 
     return score
 
+
 def guess_with_frequency(ciphertext):
     key = b""
     plaintext = b""
@@ -61,8 +63,8 @@ def guess_with_frequency(ciphertext):
     for i in range(255):
         # Guess a repeating key and record the frequency score
         guessed_key = bytes.fromhex('{0:02x}'.format(i))
-        guessed_plaintext = challenge_2.fixed_xor(guessed_key * len(ciphertext),
-            ciphertext)
+        guessed_plaintext = challenge_2.fixed_xor(guessed_key *
+                                                  len(ciphertext), ciphertext)
         score = frequency_score(guessed_plaintext)
 
         if score > max_score:
@@ -73,7 +75,8 @@ def guess_with_frequency(ciphertext):
     return key, plaintext, max_score
 
 if __name__ == '__main__':
-    ciphertext = bytes.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+    ciphertext = bytes.fromhex(
+        "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
     key, plaintext, score = guess_with_frequency(ciphertext)
 
     print("Key      : {}".format(key.decode()))

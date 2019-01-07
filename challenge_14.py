@@ -8,6 +8,7 @@ import challenge_7
 import challenge_11
 import challenge_12
 
+
 class Challenge14(unittest.TestCase):
     def test_determine_offset(self):
         offset = determine_offset(encryption_oracle, 16)
@@ -16,27 +17,28 @@ class Challenge14(unittest.TestCase):
     def test_plaintext_recovery(self):
         plaintext = recover_plaintext(encryption_oracle)
         self.assertEqual(plaintext, challenge_12.secret)
-        return True
+
 
 def deterministic_random_bytes():
     random.seed(123)
-    size = random.randint(100,1000)
+    size = random.randint(100, 1000)
+
     return bytes([random.getrandbits(8) for _ in range(size)])
+
 
 def encryption_oracle(plaintext):
     key = challenge_12.deterministic_random_key()
     prefix = deterministic_random_bytes()
 
     return challenge_11.AES_ECB(key).encrypt(prefix + plaintext
-        + challenge_12.secret)
+                                             + challenge_12.secret)
+
 
 def determine_offset(oracle, block_size):
     """
     Determines the offset in which user input starts within the ciphertext by
     analyzing what injected padding causes a repeated block.
     """
-    original_ciphertext = oracle(b"")
-
     for i in range(1, 128):
         ciphertext = oracle(b"A" * i)
         blocks = challenge_7.as_blocks(ciphertext, block_size)
@@ -47,12 +49,13 @@ def determine_offset(oracle, block_size):
                 return idx * block_size - (i - block_size)
             last = block
 
+
 def recover_plaintext(oracle):
     """
     Implements an attack similar to that in challenge 12, but accounts for the
     fact that some unknown characters are now inserted before any user input
     (referred to as an "offset" below).
-    """  
+    """
     plaintext = bytearray()
     block_size, text_size, _ = challenge_12.determine_block_stats(oracle)
     offset = determine_offset(oracle, block_size)
@@ -66,8 +69,9 @@ def recover_plaintext(oracle):
     extra_padding = extra_blocks * block_size - offset
 
     for i in range(1, text_size-offset+1):
-        # Pad so that AES-128-ECB(random-prefix || padding || recovered plaintext)
-        # leaves only one unknown byte in the current block at a time
+        # Pad so that AES-128-ECB(random-prefix || padding || recovered
+        # plaintext) leaves only one unknown byte in the current block at a
+        # time
         padding_len = (block_size - i) % block_size + extra_padding
         padding = b"A" * padding_len
 

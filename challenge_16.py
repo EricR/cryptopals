@@ -48,6 +48,7 @@ def is_admin_comment(ciphertext):
 def comment_for(user_input):
     before = b"comment1=cooking%20MCs;userdata="
     after = b";comment2=%20like%20a%20pound%20of%20bacon"
+    
     return before + sanitize_user_input(user_input) + after
 
 def sanitize_user_input(user_input):

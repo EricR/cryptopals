@@ -10,8 +10,8 @@ if __name__ == '__main__':
     plaintext = b""
 
     for line in open("4.txt", "r"):
-        guessed_key, guessed_plaintext, score = challenge_3.guess_with_frequency(
-            bytes.fromhex(line))
+        guessed_key, guessed_plaintext, score = \
+            challenge_3.guess_with_frequency(bytes.fromhex(line))
 
         if score > max_score:
             max_score = score

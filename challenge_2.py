@@ -4,6 +4,7 @@
 
 import unittest
 
+
 class Challenge2(unittest.TestCase):
     def test_fixed_xor(self):
         bytes1 = bytes.fromhex("1c0111001f010100061a024b53535009181c")
@@ -11,6 +12,7 @@ class Challenge2(unittest.TestCase):
         result = fixed_xor(bytes1, bytes2).hex()
 
         self.assertEqual(result, "686974207468652062756c6c277320657965")
+
 
 def fixed_xor(bytes1, bytes2):
     assert(len(bytes1) == len(bytes2))

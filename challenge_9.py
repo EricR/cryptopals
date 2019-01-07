@@ -4,22 +4,30 @@
 
 import unittest
 
+
+class PaddingError(Exception):
+    pass
+
+
 class Challenge9(unittest.TestCase):
     def test_pkcs7(self):
         self.assertEqual(pkcs7(b"YELLOW SUBMARINE", 20),
-            b"YELLOW SUBMARINE\x04\x04\x04\x04")
+                         b"YELLOW SUBMARINE\x04\x04\x04\x04")
         self.assertEqual(pkcs7(b"AAAAAAAAAAAAAAA", 16),
-            b"AAAAAAAAAAAAAAA\x01")
+                         b"AAAAAAAAAAAAAAA\x01")
         self.assertEqual(pkcs7(b"AAAAAAAAAAAAAAAA", 16),
-            b"AAAAAAAAAAAAAAAA\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10")
+                         b"AAAAAAAAAAAAAAAA\x10\x10\x10\x10\x10\x10\x10\x10"
+                         + b"\x10\x10\x10\x10\x10\x10\x10\x10")
 
     def test_remove_pkcs7(self):
-        bytes1 = b"AAAAAAAAAAAAAAAA\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10"
+        bytes1 = b"AAAAAAAAAAAAAAAA\x10\x10\x10\x10\x10\x10\x10\x10\x10\x10" \
+                 + b"\x10\x10\x10\x10\x10\x10"
         self.assertEqual(remove_pkcs7(bytes1, 16), b"AAAAAAAAAAAAAAAA")
         bytes2 = b"AAAAAA\x0A\x0A\x0A\x0A\x0A\x0A\x0A\x0A\x0A\x0A"
         self.assertEqual(remove_pkcs7(bytes2, 16), b"AAAAAA")
         bytes3 = b"YELLOW SUBMARINE\x04\x04\x04\x04"
         self.assertEqual(remove_pkcs7(bytes3, 20), b"YELLOW SUBMARINE")
+
 
 def pkcs7(data, block_size):
     data_size = len(data)
@@ -34,6 +42,7 @@ def pkcs7(data, block_size):
     else:
         return bytes(data) + bytes(chr(padding) * padding, 'ascii')
 
+
 def remove_pkcs7(data, block_size):
     data_size = len(data)
     nblocks = data_size // block_size
@@ -43,7 +52,7 @@ def remove_pkcs7(data, block_size):
 
     # Check if the padding is valid first
     if padding > block_size:
-        raise ValueError("Invalid PKCS#7 padding for given block size")
+        raise PaddingError("Invalid PKCS#7 padding for given block size")
 
     # Handle case where the original data is an integer multiple of block_size
     if last_block == bytes(chr(block_size) * block_size, 'ascii'):
@@ -53,7 +62,7 @@ def remove_pkcs7(data, block_size):
     if last_block[-padding:] == bytes([padding]) * padding:
         return data[:data_size-padding]
 
-    raise ValueError("Malformed PKCS#7 padding")
+    raise PaddingError("Malformed PKCS#7 padding")
 
 if __name__ == '__main__':
     unittest.main()

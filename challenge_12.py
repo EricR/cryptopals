@@ -5,12 +5,13 @@
 import random
 import base64
 import unittest
-import challenge_7
 import challenge_11
 
-secret = base64.b64decode("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd2" +
-    "4gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdX" +
-    "N0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
+secret = base64.b64decode("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRv"
+                          + "d24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcy"
+                          + "BvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpE"
+                          + "aWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
+
 
 class Challenge12(unittest.TestCase):
     def test_determine_block_stats(self):
@@ -27,19 +28,22 @@ class Challenge12(unittest.TestCase):
         plaintext = recover_plaintext(encryption_oracle)
         self.assertEqual(plaintext, secret)
 
+
 def deterministic_random_key():
     random.seed(123)
     return [random.getrandbits(8) for _ in range(16)]
+
 
 def encryption_oracle(plaintext):
     key = deterministic_random_key()
     return challenge_11.AES_ECB(key).encrypt(plaintext + secret)
 
+
 def determine_block_stats(oracle):
     initial_size = len(oracle(b""))
     padding = 0
 
-    for i in range(0,256):
+    for i in range(0, 256):
         ciphertext = oracle(b"A" * i)
 
         # Watch for a new block being appended
@@ -52,6 +56,7 @@ def determine_block_stats(oracle):
         else:
             padding += 1
 
+
 def recover_plaintext(oracle):
     """
     Exploits the fact that ECB mode is used and that we can prepend data to the
@@ -61,7 +66,7 @@ def recover_plaintext(oracle):
     possibilities), adjust the padding to add a new unknown byte, and repeat
     until we have an entire block decrypted. This process can be repeated for
     each block until the entire ciphertext is decrypted.
-    """  
+    """
     plaintext = bytearray()
     block_size, text_size, _ = determine_block_stats(encryption_oracle)
 
@@ -84,6 +89,7 @@ def recover_plaintext(oracle):
                 break
 
     return bytes(plaintext)
+
 
 def detect_mode(oracle):
     plaintext = b"A" * 128

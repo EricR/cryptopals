@@ -5,6 +5,7 @@
 import base64
 import challenge_7
 
+
 def detect_aes_ecb(blocks):
     histogram = {}
 

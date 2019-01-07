@@ -7,15 +7,20 @@ import challenge_3
 import challenge_5
 import unittest
 
+
 class Challenge6(unittest.TestCase):
     def test_hamming_distance(self):
-        self.assertEqual(hamming_distance(b"this is a test", b"wokka wokka!!!"), 37)
+        self.assertEqual(hamming_distance(b"this is a test",
+                         b"wokka wokka!!!"), 37)
+
 
 def bytes_to_bits(bytes1):
     return bin(int.from_bytes(bytes1, 'big'))
 
+
 def to_blocks(list1, size):
     return [list1[i:i + size] for i in range(0, len(list1), size)]
+
 
 def hamming_distance(bytes1, bytes2):
     """
@@ -35,16 +40,17 @@ def hamming_distance(bytes1, bytes2):
 
     return distance
 
+
 def avg_hamming_distance(bytes1, block_size):
     """
-    Calculates the average hamming distance in bits that occurs over blocks of a
-    given size.
+    Calculates the average hamming distance in bits that occurs over blocks of
+    a given size.
     """
     distances = []
     prev_block = None
 
     for block in to_blocks(bytes1, block_size):
-        if prev_block != None and len(block) == len(prev_block):
+        if prev_block is not None and len(block) == len(prev_block):
             distance = hamming_distance(block, prev_block)
             distances.append(distance / len(block))
         prev_block = block
@@ -56,10 +62,12 @@ def guess_keysize(bytes1, max_size):
     """
     Calculates the most likely key size based on average hamming distance.
     """
-    avgs = [avg_hamming_distance(bytes1, size) for size in range(2, max_size + 1)]
+    avgs = [avg_hamming_distance(bytes1, size) for size in
+            range(2, max_size + 1)]
 
     # Add 2 to index since that was our starting keysize
     return avgs.index(min(avgs)) + 2
+
 
 def transpose_blocks(bytes1, size):
     """
@@ -81,7 +89,7 @@ if __name__ == '__main__':
     ciphertext = base64.b64decode(ciphertext_hex)
     keysize = guess_keysize(ciphertext, 40)
     key = bytearray()
-    
+
     for block in transpose_blocks(ciphertext, keysize):
         key += challenge_3.guess_with_frequency(block)[0]
 

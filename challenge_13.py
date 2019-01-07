@@ -8,13 +8,16 @@ import challenge_9
 import challenge_11
 import challenge_12
 
+
 class Challenge13(unittest.TestCase):
     def test_parse_key_value(self):
         test_str = "foo=bar&baz=qux"
-        self.assertEqual(parse_key_value(test_str), {"foo": "bar", "baz": "qux"})
+        self.assertEqual(parse_key_value(test_str), {"foo": "bar",
+                                                     "baz": "qux"})
 
     def test_sanitize_email(self):
         self.assertEqual(sanitize_email("a@b.&=com"), "a@b.com")
+
 
 def forge_block(offset, plaintext, oracle):
     """
@@ -28,15 +31,17 @@ def forge_block(offset, plaintext, oracle):
 
     return challenge_7.as_blocks(ciphertext, b_size)[1]
 
+
 def forge_padding_block(oracle):
     """
     Given an oracle, forges a block with all PKCS#7 padding (which occurs when
     the length of a plaintext is an integer multiple of the block size)
     """
     b_size, pt_size, padding = challenge_12.determine_block_stats(oracle)
-    new_padding = b"A" *  padding
+    new_padding = b"A" * padding
 
     return challenge_7.as_blocks(oracle(new_padding), b_size)[-1]
+
 
 def new_profile(email):
     """
@@ -48,17 +53,21 @@ def new_profile(email):
 
     return challenge_11.AES_ECB(key).encrypt(profile)
 
+
 def get_profile(ciphertext):
     key = challenge_12.deterministic_random_key()
     plaintext = challenge_11.AES_ECB(key).decrypt(ciphertext).decode()
 
     return parse_key_value(plaintext)
 
+
 def profile_for(email):
     return "email={}&uid=10&role=user".format(sanitize_email(email))
 
+
 def sanitize_email(email):
     return email.translate({ord(c): None for c in '&='})
+
 
 def parse_key_value(str1):
     return dict(item.split("=") for item in str1.split("&"))
@@ -102,7 +111,7 @@ if __name__ == '__main__':
     # padding
     padding_block = forge_padding_block(new_profile)
 
-    profile2 = get_profile(email_block + role_block + admin_block + kv_end_block
-        + padding_block)
+    profile2 = get_profile(email_block + role_block + admin_block
+                           + kv_end_block + padding_block)
 
     print(profile2)
