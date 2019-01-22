@@ -3,11 +3,12 @@
 # https://cryptopals.com/sets/3/challenges/17
 
 import random
+import challenge_7
 import challenge_9
 import challenge_10
 
 
-def get_ciphertext():
+def get_ciphertext_and_iv():
     key = deterministic_random_key()
     iv = deterministic_random_iv()
     plaintext = bytes(select_random_string(), 'ascii')
@@ -16,7 +17,7 @@ def get_ciphertext():
     return ciphertext, iv
 
 
-def oracle(ciphertext):
+def padding_oracle(ciphertext):
     key = deterministic_random_key()
     iv = deterministic_random_iv()
 
@@ -29,6 +30,9 @@ def oracle(ciphertext):
 
 
 def select_random_string():
+    # We want non-repeating randomness for our random choice
+    random.seed(None)
+
     content = open("17.txt", "r").read()
     lines = content.split("\n")
 
@@ -44,6 +48,43 @@ def deterministic_random_iv():
     random.seed(602)
     return [random.getrandbits(8) for _ in range(16)]
 
+
+def attack_padding_oracle(oracle):
+    ciphertext, iv = get_ciphertext_and_iv()
+    blocks = [bytes(iv)] + challenge_7.as_blocks(ciphertext, 16)
+    plaintext = b""
+
+    for i in range(len(blocks)-1, 0, -1):
+        block_p = b""  # Recovered plaintext of current block
+
+        for j in range(15, -1, -1):
+            c_prime = b""  # C′, the block we control
+            pkcs = 16-j    # PKCS#7 padding char (our P′ value)
+
+            for k in range(15-j):
+                #    P′ᵢ[k] = Pᵢ[k]  ⊕ Cᵢ₋₁[k] ⊕ C′[k]
+                # => C′[k]  = P′ᵢ[k] ⊕ Pᵢ[k]   ⊕ Cᵢ₋₁[k]
+                c_prime = bytes([pkcs ^ block_p[k] ^ blocks[i-1][15-k]]) + \
+                    c_prime
+
+            for k in range(256):
+                padding = b"0" * j
+                guess = bytes([k])
+
+                # Guess until we find a valid padding (C′[j])
+                if oracle(padding + guess + c_prime + blocks[i]):
+                    # We now have enough info to solve for Pᵢ[j] in
+                    #
+                    #    P′ᵢ[j] = Pᵢ[j]  ⊕ Cᵢ₋₁[j] ⊕ C′[j]
+                    # => Pᵢ[j]  = P′ᵢ[j] ⊕ Cᵢ₋₁[j] ⊕ C′[j]
+                    #
+                    p_char = bytes([pkcs ^ blocks[i-1][j] ^ ord(guess)])
+                    block_p += p_char
+                    plaintext = p_char + plaintext
+                    break
+
+    return challenge_9.remove_pkcs7(plaintext, 16)
+
+
 if __name__ == '__main__':
-    print(get_ciphertext())
-    print(oracle(b"test"))
+    print(attack_padding_oracle(padding_oracle))

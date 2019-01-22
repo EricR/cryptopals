@@ -43,7 +43,7 @@ def determine_block_stats(oracle):
     initial_size = len(oracle(b""))
     padding = 0
 
-    for i in range(0, 256):
+    for i in range(256):
         ciphertext = oracle(b"A" * i)
 
         # Watch for a new block being appended
