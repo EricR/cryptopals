@@ -58,21 +58,22 @@ def attack_padding_oracle(oracle):
         block_p = b""  # Recovered plaintext of current block
 
         for j in range(15, -1, -1):
-            c_prime = b""  # C′, the block we control
-            pkcs = 16-j    # PKCS#7 padding char (our P′ value)
+            cprime_k = b""  # Last k bytes of C′, the block we control
+            pkcs = 16-j     # PKCS#7 padding char (our P′ value)
 
             for k in range(15-j):
                 #    P′ᵢ[k] = Pᵢ[k]  ⊕ Cᵢ₋₁[k] ⊕ C′[k]
                 # => C′[k]  = P′ᵢ[k] ⊕ Pᵢ[k]   ⊕ Cᵢ₋₁[k]
-                c_prime = bytes([pkcs ^ block_p[k] ^ blocks[i-1][15-k]]) + \
-                    c_prime
+                cprime_k = bytes([pkcs ^ block_p[k] ^ blocks[i-1][15-k]]) + \
+                    cprime_k
 
             for k in range(256):
                 padding = b"0" * j
                 guess = bytes([k])
+                c_prime = padding + guess + cprime_k
 
-                # Guess until we find a valid padding (C′[j])
-                if oracle(padding + guess + c_prime + blocks[i]):
+                # If C′||Cᵢ has valid padding, we know C′[j]
+                if oracle(c_prime + blocks[i]):
                     # We now have enough info to solve for Pᵢ[j] in
                     #
                     #    P′ᵢ[j] = Pᵢ[j]  ⊕ Cᵢ₋₁[j] ⊕ C′[j]
