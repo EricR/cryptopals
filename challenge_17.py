@@ -49,7 +49,7 @@ def deterministic_random_iv():
     return [random.getrandbits(8) for _ in range(16)]
 
 
-def attack_padding_oracle(oracle):
+def decrypt_with_padding_oracle(oracle):
     ciphertext, iv = get_ciphertext_and_iv()
     blocks = [bytes(iv)] + challenge_7.as_blocks(ciphertext, 16)
     plaintext = b""
@@ -88,4 +88,4 @@ def attack_padding_oracle(oracle):
 
 
 if __name__ == '__main__':
-    print(attack_padding_oracle(padding_oracle))
+    print(decrypt_with_padding_oracle(padding_oracle).decode())
