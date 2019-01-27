@@ -33,16 +33,14 @@ def flip_cbc_bits(ciphertext, idx, old_char, new_char):
 
 
 def new_comment(user_input):
-    key = deterministic_random_key()
-    iv = deterministic_random_iv()
+    key, iv = deterministic_random_key_and_iv()
     comment = comment_for(user_input)
 
     return challenge_10.AES_CBC(key, iv).encrypt(comment)
 
 
 def is_admin_comment(ciphertext):
-    key = deterministic_random_key()
-    iv = deterministic_random_iv()
+    key, iv = deterministic_random_key_and_iv()
     plaintext = challenge_10.AES_CBC(key, iv).decrypt(ciphertext)
 
     return b";admin=true;" in plaintext
@@ -63,14 +61,11 @@ def parse_key_value(str1):
     return dict(item.split("=") for item in str1.split(";"))
 
 
-def deterministic_random_key():
-    random.seed(234)
-    return [random.getrandbits(8) for _ in range(16)]
+def deterministic_random_key_and_iv():
+    random.seed(16)
+    data = [random.getrandbits(8) for _ in range(32)]
 
-
-def deterministic_random_iv():
-    random.seed(345)
-    return [random.getrandbits(8) for _ in range(16)]
+    return data[:16], data[16:32]
 
 
 if __name__ == '__main__':

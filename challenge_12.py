@@ -30,7 +30,7 @@ class Challenge12(unittest.TestCase):
 
 
 def deterministic_random_key():
-    random.seed(123)
+    random.seed(12)
     return [random.getrandbits(8) for _ in range(16)]
 
 

@@ -9,8 +9,7 @@ import challenge_10
 
 
 def get_ciphertext_and_iv():
-    key = deterministic_random_key()
-    iv = deterministic_random_iv()
+    key, iv = deterministic_random_key_and_iv()
     plaintext = bytes(select_random_string(), 'ascii')
     ciphertext = challenge_10.AES_CBC(key, iv).encrypt(plaintext)
 
@@ -18,8 +17,7 @@ def get_ciphertext_and_iv():
 
 
 def padding_oracle(ciphertext):
-    key = deterministic_random_key()
-    iv = deterministic_random_iv()
+    key, iv = deterministic_random_key_and_iv()
 
     try:
         challenge_10.AES_CBC(key, iv).decrypt(ciphertext)
@@ -39,14 +37,11 @@ def select_random_string():
     return random.choice(lines)
 
 
-def deterministic_random_key():
-    random.seed(531)
-    return [random.getrandbits(8) for _ in range(16)]
+def deterministic_random_key_and_iv():
+    random.seed(17)
+    data = [random.getrandbits(8) for _ in range(32)]
 
-
-def deterministic_random_iv():
-    random.seed(602)
-    return [random.getrandbits(8) for _ in range(16)]
+    return data[:16], data[16:32]
 
 
 def decrypt_with_padding_oracle(oracle):

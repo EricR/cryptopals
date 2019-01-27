@@ -20,7 +20,7 @@ class Challenge14(unittest.TestCase):
 
 
 def deterministic_random_bytes():
-    random.seed(123)
+    random.seed(14)
     size = random.randint(100, 1000)
 
     return bytes([random.getrandbits(8) for _ in range(size)])
