@@ -71,13 +71,13 @@ def guess_keysize(bytes1, max_size):
 
 def transpose_blocks(bytes1, size):
     """
-    Returns a transposed version of a given list of blocks.
+    Returns a transposed version of given bytes.
     """
     blocks = []
 
     for i in range(size):
         new_block = []
-        for block in to_blocks(ciphertext, size):
+        for block in to_blocks(bytes1, size):
             if i < len(block):
                 new_block.append(block[i])
         blocks.append(new_block)

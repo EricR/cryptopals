@@ -3,35 +3,12 @@
 # https://cryptopals.com/sets/1/challenges/3
 
 import challenge_2
-from collections import Counter
 
-lettersByFreq = {
-    "e": 12.702,
-    "t": 9.056,
-    "a": 8.167,
-    "o": 7.507,
-    "i": 6.966,
-    "n": 6.749,
-    "s": 6.327,
-    "h": 6.094,
-    "r": 5.987,
-    "d": 4.253,
-    "l": 4.025,
-    "c": 2.782,
-    "u": 2.758,
-    "m": 2.406,
-    "w": 2.360,
-    "f": 2.228,
-    "g": 2.015,
-    "y": 1.974,
-    "p": 1.929,
-    "b": 1.492,
-    "v": 0.978,
-    "k": 0.772,
-    "j": 0.153,
-    "x": 0.150,
-    "q": 0.095,
-    "z": 0.074,
+letter_scores = {
+    "e": 26, "t": 25, "a": 24, "o": 23, "i": 22, "n": 21, "s": 20, "h": 19,
+    "r": 18, "d": 17, "l": 16, "c": 15, "u": 14, "m": 13, "w": 12, "f": 11,
+    "g": 10, "y": 9,  "p": 8,  "b": 7,  "v": 6,  "k": 5,  "j": 4,  "x": 3,
+    "q": 2,  "z": 1,  " ": 20
 }
 
 
@@ -40,19 +17,7 @@ def frequency_score(plaintext):
     Returns a score representing how closely letter frequencies match the
     expected values found in the English language.
     """
-    text = ""
-    score = 1.0
-
-    try:
-        text = plaintext.decode().lower()
-    except:
-        return score
-
-    for letter, _ in Counter(text).most_common():
-        if letter in lettersByFreq:
-            score *= lettersByFreq[letter]
-
-    return score
+    return sum([letter_scores.get(chr(b), -5) for b in plaintext.lower()])
 
 
 def guess_with_frequency(ciphertext):
