@@ -57,8 +57,8 @@ class MT19937:
     f = 1812433253
 
     # Bit mask constants
-    lower_mask = 0x7fffffff # Least significant r bits
-    upper_mask = 0x80000000 # Most significant w-r bits
+    lower_mask = 0x7fffffff  # Least significant r bits
+    upper_mask = 0x80000000  # Most significant w-r bits
 
     # Generator state
     state = [0 for _ in range(recurrence_deg)]
