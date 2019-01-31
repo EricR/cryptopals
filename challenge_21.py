@@ -58,7 +58,6 @@ class MT19937:
 
     def __init__(self, seed=5489):
         self.state[0] = seed
-        self.idx = self.recurrence_deg
 
         # Initialize the state based on the seed
         for i in range(1, self.recurrence_deg):
@@ -66,6 +65,10 @@ class MT19937:
             prev_shifted = prev >> (self.word_size - 2)
 
             self.state[i] = int32(self.f * (prev ^ prev_shifted) + i)
+
+        # Immediately call twist() to generate the first series of random
+        # numbers
+        self.twist()
 
     def extract_number(self):
         """
