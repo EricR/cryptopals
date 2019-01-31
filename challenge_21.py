@@ -6,16 +6,6 @@ import unittest
 
 
 class MT19937:
-    # A PRNG that uses the following linear recurrence equation:
-    #
-    # xₖ₊ₙ = xₖ₊ₘ ⊕ (xᵘₖ || xˡₖ₊₁) A
-    #
-    # Where:
-    #
-    # - A is a constant matrix
-    # - xᵘₖ are the upper (leftmost) w-r bits of xₖ
-    # - xˡₖ₊₁ are the lower (rightmost) r bits of xₖ₊₁
-
     # Word size in bits (w)
     word_size = 32
 
@@ -29,8 +19,8 @@ class MT19937:
     # Separation point of one word (r)
     separation_point = 31
 
-    # Last row of A (a)
-    a_coefficients = 0x9908b0df
+    # Constants used in A (a)
+    a_constants = 0x9908b0df
 
     # TGFSR(R) tempering bit mask (b)
     bitmask_b = 0x9d2c5680
@@ -79,8 +69,9 @@ class MT19937:
 
     def extract_number(self):
         """
-        Extracts a seemingly random number based on state[idx]. Calls twist()
-        every n (recurrence degree) numbers.
+        Extracts a seemingly random number based on state[idx] and applies a
+        tempering transform. When there are no more numbers left to generate
+        from the state, calls twist() to generate a new state.
         """
         if self.idx >= self.recurrence_deg:
             self.twist()
@@ -99,19 +90,31 @@ class MT19937:
     def twist(self):
         """
         Applies a twist transformation to generate the next n (recurrence_deg)
-        numbers in the series.
+        numbers in the series, which becomes the new state.
+
+        The series is defined by the following linear recurrence equation:
+
+        Xₖ₊ₙ = Xₖ₊ₘ ⊕ ((Xᵘₖ || Xˡₖ₊₁) A)
+
+        Where:
+        - A is a constant matrix
+        - Xᵘₖ are the upper (leftmost) w-r bits of Xₖ
+        - Xˡₖ₊₁ are the lower (rightmost) r bits of Xₖ₊₁
         """
-        for i in range(self.recurrence_deg):
-            x = ((self.state[i] & self.upper_mask)
-                 + (self.state[(i+1) % self.recurrence_deg] & self.lower_mask))
-            xA = x >> 1
+        for k in range(self.recurrence_deg):
+            x_km = self.state[(k + self.middle_word) % self.recurrence_deg]
+            x_uk = self.state[k] & self.upper_mask
+            x_lk = self.state[(k+1) % self.recurrence_deg] & self.lower_mask
 
-            # Check if lowest bit of x is 1
-            if x % 2 != 0:
-                xA ^= self.a_coefficients
+            # Since we're using rational normal form, multiplication can be
+            # simplified as defined by xA
+            xA = (x_uk + x_lk) >> 1
 
-            tmp = self.state[(i + self.middle_word) % self.recurrence_deg]
-            self.state[i] = tmp ^ xA
+            # Add A to xA iff lowest bit of (Xᵘₖ || Xˡₖ₊₁) is 1
+            if (x_uk + x_lk) % 2 != 0:
+                xA ^= self.a_constants
+
+            self.state[k] = x_km ^ xA
 
         self.idx = 0
 
