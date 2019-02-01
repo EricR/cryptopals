@@ -57,14 +57,17 @@ class MT19937:
     idx = 0
 
     def __init__(self, seed=5489):
+        # Initialize the state based on the following equation:
+        #
+        # X₀ = seed
+        # Xᵢ = f × (Xᵢ₋₁ ⊕ (Xᵢ₋₁ >> (w−2))) + i
+
         self.state[0] = seed
 
-        # Initialize the state based on the seed
         for i in range(1, self.recurrence_deg):
             prev = self.state[i-1]
-            prev_shifted = prev >> (self.word_size - 2)
-
-            self.state[i] = int32(self.f * (prev ^ prev_shifted) + i)
+            w = self.word_size
+            self.state[i] = int32(self.f * (prev ^ (prev >> (w-2))) + i)
 
         # Immediately call twist() to generate the first series of random
         # numbers
