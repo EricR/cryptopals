@@ -136,7 +136,7 @@ class Challenge21(unittest.TestCase):
 
 def int32(x):
     """
-    Returns the lowest w (32) bits of a given value.
+    Returns a given value as a 32-bit integer.
     """
     return x & 0xffffffff
 
