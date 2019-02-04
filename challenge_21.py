@@ -135,7 +135,7 @@ class Challenge21(unittest.TestCase):
 
 def int32(x):
     """
-    Returns a given value as a 32-bit integer.
+    Returns a given value as a 32-bit unsigned integer.
     """
     return x & 0xffffffff
 
