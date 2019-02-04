@@ -36,7 +36,7 @@ class MT19937Cloner(challenge_21.MT19937):
         #
         for i in range(1, 3):
             shifted_mask = 0xfffe << (self.bitshift_t * i)
-            y ^= y << self.bitshift_t & (self.bitmask_c & shifted_mask)
+            y ^= y << self.bitshift_t & self.bitmask_c & shifted_mask
 
         # bitshift_s = 7
         # bitmask_b = 0x9d2c5680
@@ -45,7 +45,7 @@ class MT19937Cloner(challenge_21.MT19937):
         #
         for i in range(5):
             shifted_mask = 0xfe << (self.bitshift_s * i)
-            y ^= y << self.bitshift_s & (self.bitmask_b & shifted_mask)
+            y ^= y << self.bitshift_s & self.bitmask_b & shifted_mask
 
         # bitshift_u = 11
         # bitmask_d = 0xffffffff
