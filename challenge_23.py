@@ -10,7 +10,7 @@ import challenge_21
 class MT19937Cloner(challenge_21.MT19937):
     def untemper(self, y):
         """
-        Applies the inverse of MT19937's tempering transform, following that:
+        Applies the inverse of MT19937's tempering function, following that:
 
         - The inverse of XOR is XOR.
         - There's no immediate inverse of shifting then masking bits. To
@@ -59,7 +59,7 @@ class Challenge23(unittest.TestCase):
     def test_untemper(self):
         cloner = MT19937Cloner()
 
-        # Original MT19937 tempering transform for testing
+        # Original MT19937 tempering function for testing
         def temper(y):
             y ^= y >> cloner.bitshift_u & cloner.bitmask_d
             y ^= y << cloner.bitshift_s & cloner.bitmask_b

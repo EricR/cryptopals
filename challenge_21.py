@@ -76,13 +76,13 @@ class MT19937:
     def extract_number(self):
         """
         Extracts a seemingly random number based on state[idx] and applies a
-        tempering transform. When there are no more numbers left to generate
+        tempering function. When there are no more numbers left to generate
         from the state, calls twist() to generate a new state.
         """
         if self.idx >= self.recurrence_deg:
             self.twist()
 
-        # Apply the tempering transform
+        # Apply the tempering function
         y = self.state[self.idx]
         y ^= y >> self.bitshift_u & self.bitmask_d
         y ^= y << self.bitshift_s & self.bitmask_b
