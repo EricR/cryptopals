@@ -50,19 +50,18 @@ class MT19937:
     lower_mask = 0x7fffffff  # Least significant r bits
     upper_mask = 0x80000000  # Most significant w-r bits
 
-    # Generator state
-    state = [0 for _ in range(recurrence_deg)]
-
-    # Index value
-    idx = 0
-
     def __init__(self, seed=5489):
         # Initialize the state based on the following equation:
         #
         # X₀ = seed
         # Xᵢ = f × (Xᵢ₋₁ ⊕ (Xᵢ₋₁ >> (w−2))) + i
 
+        # Create generator state
+        self.state = [0 for _ in range(self.recurrence_deg)]
         self.state[0] = seed
+
+        # Set index value
+        self.idx = 0
 
         for i in range(1, self.recurrence_deg):
             prev = self.state[i-1]
@@ -127,11 +126,11 @@ class MT19937:
 
 class Challenge21(unittest.TestCase):
     def test_MT19937(self):
-        random = MT19937(123)
-        self.assertEqual(random.extract_number(), 2991312382)
-        self.assertEqual(random.extract_number(), 3062119789)
-        self.assertEqual(random.extract_number(), 1228959102)
-        self.assertEqual(random.extract_number(), 1840268610)
+        mt = MT19937(123)
+        self.assertEqual(mt.extract_number(), 2991312382)
+        self.assertEqual(mt.extract_number(), 3062119789)
+        self.assertEqual(mt.extract_number(), 1228959102)
+        self.assertEqual(mt.extract_number(), 1840268610)
 
 
 def int32(x):
