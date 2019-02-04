@@ -29,8 +29,8 @@ class MT19937Cloner(challenge_21.MT19937):
         # bitshift_t = 15
         # bitmask_c = 0xefc60000
         #                   ~~~~ This will never result in 1 when AND'd,
-        #                        meaning we could optimize here by skipping
-        #                        the first 16 bits (when i = 0)
+        #                        meaning we can optimize here by skipping the
+        #                        first 16 bits (when i = 0)
         # additional mask = 0xfffe (15 bits)
         # 32 // 15 = 3 times
         #
