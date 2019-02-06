@@ -90,7 +90,7 @@ class Challenge23(unittest.TestCase):
             cloner.sample(observed)
 
         # Make sure our "spliced" generator matches the original
-        for i in range(1000):
+        for _ in range(1000):
             self.assertEqual(cloner.extract_number(), mt.extract_number())
 
 if __name__ == '__main__':

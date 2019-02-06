@@ -21,15 +21,18 @@ def random_number():
 
 
 def crack_seed(output):
+    """
+    Guesses a PRNG seed that is based on a recent timestamp.
+    """
     now = int(time.time())
 
     for seed in range((now - 1103), now):
         result = challenge_21.MT19937(seed).extract_number()
 
         if result == output:
-            return seed
+            return True, seed
 
-    return False
+    return False, 0
 
 if __name__ == '__main__':
     seed, output = random_number()
@@ -37,9 +40,7 @@ if __name__ == '__main__':
     print("Random number is {}".format(output))
     print("Attempting to crack seed...")
 
-    recovered_seed = crack_seed(output)
+    success, recovered_seed = crack_seed(output)
 
-    print("Seed was {}".format(recovered_seed))
-
-    if recovered_seed == seed:
-        print("Seed was successfully cracked")
+    if success and recovered_seed == seed:
+        print("Seed was successfully cracked as {}".format(recovered_seed))
