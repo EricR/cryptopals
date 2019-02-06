@@ -2,7 +2,7 @@
 #
 # https://cryptopals.com/sets/1/challenges/3
 
-import challenge_2
+import challenge_02
 
 letter_scores = {
     "e": 26, "t": 25, "a": 24, "o": 23, "i": 22, "n": 21, "s": 20, "h": 19,
@@ -28,8 +28,8 @@ def guess_with_frequency(ciphertext):
     for i in range(255):
         # Guess a repeating key and record the frequency score
         guessed_key = bytes.fromhex('{0:02x}'.format(i))
-        guessed_plaintext = challenge_2.fixed_xor(guessed_key *
-                                                  len(ciphertext), ciphertext)
+        guessed_plaintext = challenge_02.fixed_xor(guessed_key *
+                                                   len(ciphertext), ciphertext)
         score = frequency_score(guessed_plaintext)
 
         if score > max_score:

@@ -3,8 +3,8 @@
 # https://cryptopals.com/sets/2/challenges/13
 
 import unittest
-import challenge_7
-import challenge_9
+import challenge_07
+import challenge_09
 import challenge_11
 import challenge_12
 
@@ -26,10 +26,10 @@ def forge_block(offset, plaintext, oracle):
     """
     b_size, _, _ = challenge_12.determine_block_stats(oracle)
     new_padding = b"A" * (b_size - offset)
-    payload = new_padding + challenge_9.pkcs7(plaintext, b_size)
+    payload = new_padding + challenge_09.pkcs7(plaintext, b_size)
     ciphertext = oracle(payload)
 
-    return challenge_7.as_blocks(ciphertext, b_size)[1]
+    return challenge_07.as_blocks(ciphertext, b_size)[1]
 
 
 def forge_padding_block(oracle):
@@ -40,7 +40,7 @@ def forge_padding_block(oracle):
     b_size, pt_size, padding = challenge_12.determine_block_stats(oracle)
     new_padding = b"A" * padding
 
-    return challenge_7.as_blocks(oracle(new_padding), b_size)[-1]
+    return challenge_07.as_blocks(oracle(new_padding), b_size)[-1]
 
 
 def new_profile(email):
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # When email length is 13, the second block ends in "role="
     ciphertext = new_profile(b"test@test.com")
     b_size, _, _ = challenge_12.determine_block_stats(new_profile)
-    blocks = challenge_7.as_blocks(ciphertext, b_size)
+    blocks = challenge_07.as_blocks(ciphertext, b_size)
 
     # "Cut and paste" blocks to provide the desired ciphertext
     profile1 = get_profile(blocks[0] + blocks[1] + forgery)
@@ -93,20 +93,20 @@ if __name__ == '__main__':
     # When input length is 13, the second block ends in "role=". The last 3
     # chars will become part of the email
     ciphertext = new_profile(b"AAAAAAAAAAcom")
-    role_block = challenge_7.as_blocks(ciphertext, b_size)[1]
+    role_block = challenge_07.as_blocks(ciphertext, b_size)[1]
 
     # When input length is 15, the second block starts with last 5 chars
     ciphertext = new_profile(b"AAAAAAAAAAadmin")
-    admin_block = challenge_7.as_blocks(ciphertext, b_size)[1]
+    admin_block = challenge_07.as_blocks(ciphertext, b_size)[1]
 
     # Grab a block that contains "=" so key value parsing still works
     ciphertext = new_profile(b"AAAAAAAAAA")
-    kv_end_block = challenge_7.as_blocks(ciphertext, b_size)[0]
+    kv_end_block = challenge_07.as_blocks(ciphertext, b_size)[0]
 
     # Grab a block that contains an email key value minus the last 4 chars
     # (those come from role_block as described above)
     ciphertext = new_profile(b"test@test.")
-    email_block = challenge_7.as_blocks(ciphertext, b_size)[0]
+    email_block = challenge_07.as_blocks(ciphertext, b_size)[0]
 
     # Forge a block full of PKCS#7 padding so we don't end up with invalid
     # padding

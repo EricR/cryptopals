@@ -2,16 +2,16 @@
 #
 # https://cryptopals.com/sets/1/challenges/4
 
-import challenge_3
+import challenge_03
 
 if __name__ == '__main__':
     max_score = 1.0
     key = b""
     plaintext = b""
 
-    for line in open("4.txt", "r"):
+    for line in open("04.txt", "r"):
         guessed_key, guessed_plaintext, score = \
-            challenge_3.guess_with_frequency(bytes.fromhex(line))
+            challenge_03.guess_with_frequency(bytes.fromhex(line))
 
         if score > max_score:
             max_score = score

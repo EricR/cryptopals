@@ -3,7 +3,7 @@
 # https://cryptopals.com/sets/1/challenges/8
 
 import base64
-import challenge_7
+import challenge_07
 
 
 def detect_aes_ecb(blocks):
@@ -21,9 +21,9 @@ if __name__ == '__main__':
     max_score = 0
     block = b""
 
-    for line in open("8.txt", "r"):
+    for line in open("08.txt", "r"):
         ciphertext = base64.b64decode(line)
-        blocks = challenge_7.as_blocks(ciphertext, 16)
+        blocks = challenge_07.as_blocks(ciphertext, 16)
         guessed_block, score = detect_aes_ecb(blocks)
 
         if score > max_score:

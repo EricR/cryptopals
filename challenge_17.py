@@ -3,8 +3,8 @@
 # https://cryptopals.com/sets/3/challenges/17
 
 import random
-import challenge_7
-import challenge_9
+import challenge_07
+import challenge_09
 import challenge_10
 
 
@@ -21,7 +21,7 @@ def padding_oracle(ciphertext):
 
     try:
         challenge_10.AES_CBC(key, iv).decrypt(ciphertext)
-    except challenge_9.PaddingError:
+    except challenge_09.PaddingError:
         return False
 
     return True
@@ -46,7 +46,7 @@ def deterministic_random_key_and_iv():
 
 def decrypt_with_padding_oracle(oracle):
     ciphertext, iv = get_ciphertext_and_iv()
-    blocks = [bytes(iv)] + challenge_7.as_blocks(ciphertext, 16)
+    blocks = [bytes(iv)] + challenge_07.as_blocks(ciphertext, 16)
     plaintext = b""
 
     for i in range(len(blocks)-1, 0, -1):
@@ -79,7 +79,7 @@ def decrypt_with_padding_oracle(oracle):
                     plaintext = p_char + plaintext
                     break
 
-    return challenge_9.remove_pkcs7(plaintext, 16)
+    return challenge_09.remove_pkcs7(plaintext, 16)
 
 
 if __name__ == '__main__':

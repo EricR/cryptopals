@@ -4,7 +4,7 @@
 
 import random
 import unittest
-import challenge_7
+import challenge_07
 import challenge_11
 import challenge_12
 
@@ -41,7 +41,7 @@ def determine_offset(oracle, block_size):
     """
     for i in range(1, 128):
         ciphertext = oracle(b"A" * i)
-        blocks = challenge_7.as_blocks(ciphertext, block_size)
+        blocks = challenge_07.as_blocks(ciphertext, block_size)
         last = None
 
         for idx, block in enumerate(blocks):

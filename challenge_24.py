@@ -71,13 +71,14 @@ def div_round_up(x, y):
 
 def generate_ciphertext(known_plaintext):
     """
-    Generates a random key and performs ENC(RANDOM_PREFIX||KNOWN_PLAINTEXT).
+    Generates a random key and performs encrypt(random_prefix ||
+    known_plaintext).
     """
     key = random.randint(0, 0xffff)
     prefix_len = random.randint(4, 12)
-    prefix = [random.randint(0, 255) for _ in range(prefix_len)]
+    random_prefix = [random.randint(0, 255) for _ in range(prefix_len)]
     cipher = MT19937StreamCipher(key)
-    plaintext = bytes(prefix) + known_plaintext
+    plaintext = bytes(random_prefix) + known_plaintext
 
     return key, cipher.encrypt(plaintext)
 

@@ -2,7 +2,7 @@
 #
 # https://cryptopals.com/sets/2/challenges/15
 
-import challenge_9
+import challenge_09
 
 # Already implemented PKCS#7 padding removal and validation in challenge 9,
 # since it seemed required to complete challenge 12 without resorting to
@@ -10,8 +10,8 @@ import challenge_9
 
 
 def pkcs7(data, block_size):
-    challenge_9.pkcs7(data, block_size)
+    challenge_09.pkcs7(data, block_size)
 
 
 def remove_pkcs7(data, block_size):
-    challenge_9.remove_pkcs7(data, block_size)
+    challenge_09.remove_pkcs7(data, block_size)

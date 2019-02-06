@@ -3,12 +3,12 @@
 # https://cryptopals.com/sets/1/challenges/6
 
 import base64
-import challenge_3
-import challenge_5
+import challenge_03
+import challenge_05
 import unittest
 
 
-class Challenge6(unittest.TestCase):
+class Challenge06(unittest.TestCase):
     def test_hamming_distance(self):
         self.assertEqual(hamming_distance(b"this is a test",
                          b"wokka wokka!!!"), 37)
@@ -86,15 +86,15 @@ def transpose_blocks(bytes1, size):
 
 
 if __name__ == '__main__':
-    ciphertext_hex = open("6.txt", "r").read()
+    ciphertext_hex = open("06.txt", "r").read()
     ciphertext = base64.b64decode(ciphertext_hex)
     keysize = guess_keysize(ciphertext, 40)
     key = bytearray()
 
     for block in transpose_blocks(ciphertext, keysize):
-        key += challenge_3.guess_with_frequency(block)[0]
+        key += challenge_03.guess_with_frequency(block)[0]
 
-    plaintext = challenge_5.repeating_xor(key, ciphertext).decode()
+    plaintext = challenge_05.repeating_xor(key, ciphertext).decode()
 
     print("Key      : {}".format(key))
     print("Plaintext: {}".format(plaintext))

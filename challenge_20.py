@@ -2,8 +2,8 @@
 #
 # https://cryptopals.com/sets/3/challenges/20
 
-import challenge_3
-import challenge_5
+import challenge_03
+import challenge_05
 import challenge_18
 import random
 import base64
@@ -35,7 +35,7 @@ def attack_repeating_ctr_nonce(ciphertexts):
     keystream = b""
 
     for ciphertext in transpose_ciphertexts(ciphertexts):
-        keystream += challenge_3.guess_with_frequency(ciphertext)[0]
+        keystream += challenge_03.guess_with_frequency(ciphertext)[0]
 
     return keystream
 
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     keystream = attack_repeating_ctr_nonce(ciphertexts)
 
     for ciphertext in ciphertexts:
-        plaintext = challenge_5.repeating_xor(keystream, ciphertext)
+        plaintext = challenge_05.repeating_xor(keystream, ciphertext)
         print(plaintext)

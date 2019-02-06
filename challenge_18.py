@@ -2,7 +2,7 @@
 #
 # https://cryptopals.com/sets/3/challenges/18
 
-import challenge_7
+import challenge_07
 import unittest
 import base64
 
@@ -20,10 +20,10 @@ class Challenge18(unittest.TestCase):
 
 class AES_CTR:
     def __init__(self, key):
-        self.cipher = challenge_7.AES(key)
+        self.cipher = challenge_07.AES(key)
 
     def encrypt(self, plaintext, nonce):
-        blocks = challenge_7.as_blocks(plaintext, 16)
+        blocks = challenge_07.as_blocks(plaintext, 16)
         keystream = b""
         ciphertext = b""
 

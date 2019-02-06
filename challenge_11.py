@@ -3,22 +3,22 @@
 # https://cryptopals.com/sets/2/challenges/11
 
 import secrets
-import challenge_7
-import challenge_8
-import challenge_9
+import challenge_07
+import challenge_08
+import challenge_09
 import challenge_10
 
 
 class AES_ECB:
     def __init__(self, key):
-        self.cipher = challenge_7.AES(key)
+        self.cipher = challenge_07.AES(key)
 
     def encrypt(self, plaintext):
         # Apply padding so all blocks end up as 16 bytes
-        plaintext = challenge_9.pkcs7(plaintext, 16)
+        plaintext = challenge_09.pkcs7(plaintext, 16)
 
         # Break the plaintext up into blocks
-        blocks = challenge_7.as_blocks(plaintext, 16)
+        blocks = challenge_07.as_blocks(plaintext, 16)
 
         # All blocks are encrypted individually
         for i in range(len(blocks)):
@@ -31,13 +31,13 @@ class AES_ECB:
             raise ValueError("Invalid length of ciphertext")
 
         # Break the ciphertext up into blocks
-        blocks = challenge_7.as_blocks(ciphertext, 16)
+        blocks = challenge_07.as_blocks(ciphertext, 16)
 
         # All blocks are decrypted individually
         for i in range(len(blocks)):
             blocks[i] = self.cipher.decrypt(blocks[i])
 
-        return challenge_9.remove_pkcs7(b''.join(blocks), 16)
+        return challenge_09.remove_pkcs7(b''.join(blocks), 16)
 
 
 def random_key_or_iv():
@@ -61,9 +61,9 @@ def encryption_oracle(plaintext):
 
 
 def detect_mode(ciphertext):
-    blocks = challenge_7.as_blocks(ciphertext, 16)
+    blocks = challenge_07.as_blocks(ciphertext, 16)
 
-    if challenge_8.detect_aes_ecb(blocks)[1] > 1:
+    if challenge_08.detect_aes_ecb(blocks)[1] > 1:
         return "ecb"
     else:
         return "cbc"
