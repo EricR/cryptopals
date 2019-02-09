@@ -78,8 +78,7 @@ if __name__ == '__main__':
     key = b"YELLOW SUBMARINE"
     iv = bytes.fromhex("00000000000000000000000000000000")
     cipher = AES_CBC(key, iv)
-    ciphertext_hex = open("10.txt", "r").read()
-    ciphertext = base64.b64decode(ciphertext_hex)
+    ciphertext = base64.b64decode(open("10.txt", "r").read())
     plaintext = cipher.decrypt(ciphertext).decode()
 
     print(plaintext)

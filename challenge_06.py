@@ -86,8 +86,7 @@ def transpose_blocks(bytes1, size):
 
 
 if __name__ == '__main__':
-    ciphertext_hex = open("06.txt", "r").read()
-    ciphertext = base64.b64decode(ciphertext_hex)
+    ciphertext = base64.b64decode(open("06.txt", "r").read())
     keysize = guess_keysize(ciphertext, 40)
     key = bytearray()
 

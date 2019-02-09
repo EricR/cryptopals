@@ -10,8 +10,7 @@ import challenge_10
 
 def get_ciphertext_and_iv():
     key, iv = deterministic_random_key_and_iv()
-    plaintext = bytes(select_random_string(), 'ascii')
-    ciphertext = challenge_10.AES_CBC(key, iv).encrypt(plaintext)
+    ciphertext = challenge_10.AES_CBC(key, iv).encrypt(select_random_string())
 
     return ciphertext, iv
 
@@ -31,8 +30,8 @@ def select_random_string():
     # We want non-repeating randomness for our random choice
     random.seed(None)
 
-    content = open("17.txt", "r").read()
-    lines = content.split("\n")
+    content = open("17.txt", "rb").read()
+    lines = content.split(b"\n")
 
     return random.choice(lines)
 

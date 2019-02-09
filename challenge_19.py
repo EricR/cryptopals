@@ -14,7 +14,7 @@ def deterministic_random_key():
 
 def generate_ciphertexts():
     key = deterministic_random_key()
-    content = bytes(open("19.txt", "r").read(), 'ascii')
+    content = open("19.txt", "rb").read()
     ciphertexts = []
 
     for line in content.split(b"\n"):
