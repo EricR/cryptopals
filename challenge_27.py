@@ -29,7 +29,7 @@ def read_comment(ciphertext):
     comment = challenge_10.AES_CBC(key, key).decrypt(ciphertext)
 
     # Verify ASCII compliance. Any character >= 0x80 will throw an exception
-    # and leak the plaintext to the attacker.
+    # containing the plaintext.
     try:
         return comment.decode('ascii')
     except UnicodeDecodeError:
@@ -78,6 +78,7 @@ def recover_key(ciphertext, oracle):
     key = b""
     error_msg = b""
 
+    # Leak the exception containing the plaintext to the attacker.
     try:
         oracle(blocks[0] + (b"\x00" * 16) + blocks[0] + b"".join(blocks[1:5]))
     except Exception as e:
