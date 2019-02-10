@@ -44,7 +44,7 @@ def recover_plaintext(ciphertext, edit_func):
     """
     Recovers plaintext by using the edit function to first recover the original
     keystream. This happens when AES-CTR adds our edited plaintext (all zero
-    bytes) to the keystream, since A XOR 0x00 = A.
+    bytes) to the keystream, since A ⊕ 0x00 = A.
 
     Once the keystream is recovered, XORs the ciphertext with the it to remove
     the keystream and leave only the plaintext.
