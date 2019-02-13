@@ -46,7 +46,7 @@ class SHA1:
 
         l := the length of the message
         k := the smallest non-negative solution in (l+1+k ≡ 448 mod 512)
-        padding := 1 || k zero bits || l 
+        padding := 1 || k zero bits || l
         """
         padding_len = (56 - (len(msg) + 1 % self.block_size)) % self.block_size
         msg_len = i32_to_i64(len(msg))
