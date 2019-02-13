@@ -166,9 +166,9 @@ def i32_to_i64(i):
 class Challenge28(unittest.TestCase):
     def test_sha1_mac(self):
         self.assertNotEqual(SHA1_MAC(b"s3cr3t", b"hello world"),
-            SHA1_MAC(b"s3cr3t", b"goodbye world"))
+                            SHA1_MAC(b"s3cr3t", b"goodbye world"))
         self.assertNotEqual(SHA1_MAC(b"s3cr3t", b"hello world"),
-            SHA1_MAC(b"AAAAAA", b"hello world"))
+                            SHA1_MAC(b"AAAAAA", b"hello world"))
 
 
 def SHA1_MAC(key, msg):
