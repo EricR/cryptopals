@@ -130,9 +130,9 @@ class SHA1:
         # Compute the i-th intermediate hash value H⁽ᶦ⁾
         self.h0 = i32(a + self.h0)
         self.h1 = i32(b + self.h1)
-        self.h1 = i32(c + self.h2)
-        self.h1 = i32(d + self.h3)
-        self.h1 = i32(e + self.h4)
+        self.h2 = i32(c + self.h2)
+        self.h3 = i32(d + self.h3)
+        self.h4 = i32(e + self.h4)
 
     def __rotl(self, n, x):
         """
@@ -164,6 +164,10 @@ def i32_to_i64(i):
 
 
 class Challenge28(unittest.TestCase):
+    def test_sha1(self):
+        self.assertEqual(SHA1(b"hello world").hexdigest(),
+                         "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed")
+
     def test_sha1_mac(self):
         self.assertNotEqual(SHA1_MAC(b"s3cr3t", b"hello world"),
                             SHA1_MAC(b"s3cr3t", b"goodbye world"))
